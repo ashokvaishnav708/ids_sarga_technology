@@ -1,0 +1,803 @@
+
+st_ids.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000060c  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         000000a4  00800060  0000060c  000006a0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          000000bb  00800104  00800104  00000744  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000744  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000774  2**2
+                  CONTENTS, READONLY
+  5 .debug_info   0000048c  00000000  00000000  000007b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000044e  00000000  00000000  00000c3c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000001a  00000000  00000000  0000108a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000017a  00000000  00000000  000010a4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	e9 c0       	rjmp	.+466    	; 0x1d6 <__vector_1>
+   4:	1a c1       	rjmp	.+564    	; 0x23a <__vector_2>
+   6:	2a c0       	rjmp	.+84     	; 0x5c <__bad_interrupt>
+   8:	29 c0       	rjmp	.+82     	; 0x5c <__bad_interrupt>
+   a:	28 c0       	rjmp	.+80     	; 0x5c <__bad_interrupt>
+   c:	27 c0       	rjmp	.+78     	; 0x5c <__bad_interrupt>
+   e:	26 c0       	rjmp	.+76     	; 0x5c <__bad_interrupt>
+  10:	25 c0       	rjmp	.+74     	; 0x5c <__bad_interrupt>
+  12:	24 c0       	rjmp	.+72     	; 0x5c <__bad_interrupt>
+  14:	23 c0       	rjmp	.+70     	; 0x5c <__bad_interrupt>
+  16:	b3 c0       	rjmp	.+358    	; 0x17e <__vector_11>
+  18:	21 c0       	rjmp	.+66     	; 0x5c <__bad_interrupt>
+  1a:	20 c0       	rjmp	.+64     	; 0x5c <__bad_interrupt>
+  1c:	1f c0       	rjmp	.+62     	; 0x5c <__bad_interrupt>
+  1e:	1e c0       	rjmp	.+60     	; 0x5c <__bad_interrupt>
+  20:	1d c0       	rjmp	.+58     	; 0x5c <__bad_interrupt>
+  22:	1c c0       	rjmp	.+56     	; 0x5c <__bad_interrupt>
+  24:	1b c0       	rjmp	.+54     	; 0x5c <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_copy_data>:
+  32:	11 e0       	ldi	r17, 0x01	; 1
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	ec e0       	ldi	r30, 0x0C	; 12
+  3a:	f6 e0       	ldi	r31, 0x06	; 6
+  3c:	02 c0       	rjmp	.+4      	; 0x42 <__SREG__+0x3>
+  3e:	05 90       	lpm	r0, Z+
+  40:	0d 92       	st	X+, r0
+  42:	a4 30       	cpi	r26, 0x04	; 4
+  44:	b1 07       	cpc	r27, r17
+  46:	d9 f7       	brne	.-10     	; 0x3e <__SP_H__>
+
+00000048 <__do_clear_bss>:
+  48:	21 e0       	ldi	r18, 0x01	; 1
+  4a:	a4 e0       	ldi	r26, 0x04	; 4
+  4c:	b1 e0       	ldi	r27, 0x01	; 1
+  4e:	01 c0       	rjmp	.+2      	; 0x52 <.do_clear_bss_start>
+
+00000050 <.do_clear_bss_loop>:
+  50:	1d 92       	st	X+, r1
+
+00000052 <.do_clear_bss_start>:
+  52:	af 3b       	cpi	r26, 0xBF	; 191
+  54:	b2 07       	cpc	r27, r18
+  56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
+  58:	20 d1       	rcall	.+576    	; 0x29a <main>
+  5a:	d6 c2       	rjmp	.+1452   	; 0x608 <_exit>
+
+0000005c <__bad_interrupt>:
+  5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
+
+0000005e <send_sms>:
+  5e:	0f 93       	push	r16
+  60:	1f 93       	push	r17
+  62:	cf 93       	push	r28
+  64:	df 93       	push	r29
+  66:	ec 01       	movw	r28, r24
+  68:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <x+0x1>
+  6c:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <x>
+  70:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <status+0x1>
+  74:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <status>
+  78:	65 d2       	rcall	.+1226   	; 0x544 <ids_select_mem>
+  7a:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <x+0x1>
+  7e:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <x>
+  82:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <status+0x1>
+  86:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <status>
+  8a:	82 e0       	ldi	r24, 0x02	; 2
+  8c:	90 e0       	ldi	r25, 0x00	; 0
+  8e:	9b d1       	rcall	.+822    	; 0x3c6 <ids_delayms>
+  90:	6d d2       	rcall	.+1242   	; 0x56c <ids_req_owner>
+  92:	82 e0       	ldi	r24, 0x02	; 2
+  94:	90 e0       	ldi	r25, 0x00	; 0
+  96:	97 d1       	rcall	.+814    	; 0x3c6 <ids_delayms>
+  98:	0b ea       	ldi	r16, 0xAB	; 171
+  9a:	11 e0       	ldi	r17, 0x01	; 1
+  9c:	80 91 0a 01 	lds	r24, 0x010A	; 0x80010a <status>
+  a0:	90 91 0b 01 	lds	r25, 0x010B	; 0x80010b <status+0x1>
+  a4:	01 97       	sbiw	r24, 0x01	; 1
+  a6:	09 f0       	breq	.+2      	; 0xaa <send_sms+0x4c>
+  a8:	51 c0       	rjmp	.+162    	; 0x14c <send_sms+0xee>
+  aa:	20 91 12 01 	lds	r18, 0x0112	; 0x800112 <s>
+  ae:	30 91 13 01 	lds	r19, 0x0113	; 0x800113 <s+0x1>
+  b2:	40 91 10 01 	lds	r20, 0x0110	; 0x800110 <j>
+  b6:	50 91 11 01 	lds	r21, 0x0111	; 0x800111 <j+0x1>
+  ba:	e4 e1       	ldi	r30, 0x14	; 20
+  bc:	f1 e0       	ldi	r31, 0x01	; 1
+  be:	bf 01       	movw	r22, r30
+  c0:	64 51       	subi	r22, 0x14	; 20
+  c2:	71 40       	sbci	r23, 0x01	; 1
+  c4:	81 91       	ld	r24, Z+
+  c6:	88 23       	and	r24, r24
+  c8:	91 f0       	breq	.+36     	; 0xee <send_sms+0x90>
+  ca:	82 32       	cpi	r24, 0x22	; 34
+  cc:	19 f4       	brne	.+6      	; 0xd4 <send_sms+0x76>
+  ce:	2f 5f       	subi	r18, 0xFF	; 255
+  d0:	3f 4f       	sbci	r19, 0xFF	; 255
+  d2:	f5 cf       	rjmp	.-22     	; 0xbe <send_sms+0x60>
+  d4:	23 30       	cpi	r18, 0x03	; 3
+  d6:	31 05       	cpc	r19, r1
+  d8:	39 f4       	brne	.+14     	; 0xe8 <send_sms+0x8a>
+  da:	da 01       	movw	r26, r20
+  dc:	a5 55       	subi	r26, 0x55	; 85
+  de:	be 4f       	sbci	r27, 0xFE	; 254
+  e0:	8c 93       	st	X, r24
+  e2:	4f 5f       	subi	r20, 0xFF	; 255
+  e4:	5f 4f       	sbci	r21, 0xFF	; 255
+  e6:	eb cf       	rjmp	.-42     	; 0xbe <send_sms+0x60>
+  e8:	24 30       	cpi	r18, 0x04	; 4
+  ea:	31 05       	cpc	r19, r1
+  ec:	41 f7       	brne	.-48     	; 0xbe <send_sms+0x60>
+  ee:	70 93 0f 01 	sts	0x010F, r23	; 0x80010f <i+0x1>
+  f2:	60 93 0e 01 	sts	0x010E, r22	; 0x80010e <i>
+  f6:	30 93 13 01 	sts	0x0113, r19	; 0x800113 <s+0x1>
+  fa:	20 93 12 01 	sts	0x0112, r18	; 0x800112 <s>
+  fe:	50 93 11 01 	sts	0x0111, r21	; 0x800111 <j+0x1>
+ 102:	40 93 10 01 	sts	0x0110, r20	; 0x800110 <j>
+ 106:	f8 01       	movw	r30, r16
+ 108:	01 90       	ld	r0, Z+
+ 10a:	00 20       	and	r0, r0
+ 10c:	e9 f7       	brne	.-6      	; 0x108 <send_sms+0xaa>
+ 10e:	31 97       	sbiw	r30, 0x01	; 1
+ 110:	eb 5a       	subi	r30, 0xAB	; 171
+ 112:	f1 40       	sbci	r31, 0x01	; 1
+ 114:	ea 30       	cpi	r30, 0x0A	; 10
+ 116:	f1 05       	cpc	r31, r1
+ 118:	11 f0       	breq	.+4      	; 0x11e <send_sms+0xc0>
+ 11a:	3d 97       	sbiw	r30, 0x0d	; 13
+ 11c:	49 f4       	brne	.+18     	; 0x130 <send_sms+0xd2>
+ 11e:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <x+0x1>
+ 122:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <x>
+ 126:	be 01       	movw	r22, r28
+ 128:	8b ea       	ldi	r24, 0xAB	; 171
+ 12a:	91 e0       	ldi	r25, 0x01	; 1
+ 12c:	bf d1       	rcall	.+894    	; 0x4ac <ids_send_sms>
+ 12e:	07 c0       	rjmp	.+14     	; 0x13e <send_sms+0xe0>
+ 130:	6d ee       	ldi	r22, 0xED	; 237
+ 132:	70 e0       	ldi	r23, 0x00	; 0
+ 134:	84 e1       	ldi	r24, 0x14	; 20
+ 136:	91 e0       	ldi	r25, 0x01	; 1
+ 138:	38 d2       	rcall	.+1136   	; 0x5aa <strstr>
+ 13a:	89 2b       	or	r24, r25
+ 13c:	39 f0       	breq	.+14     	; 0x14c <send_sms+0xee>
+ 13e:	80 e0       	ldi	r24, 0x00	; 0
+ 140:	90 e0       	ldi	r25, 0x00	; 0
+ 142:	df 91       	pop	r29
+ 144:	cf 91       	pop	r28
+ 146:	1f 91       	pop	r17
+ 148:	0f 91       	pop	r16
+ 14a:	75 c1       	rjmp	.+746    	; 0x436 <ids_system>
+ 14c:	81 e0       	ldi	r24, 0x01	; 1
+ 14e:	90 e0       	ldi	r25, 0x00	; 0
+ 150:	72 d1       	rcall	.+740    	; 0x436 <ids_system>
+ 152:	2f ef       	ldi	r18, 0xFF	; 255
+ 154:	80 e7       	ldi	r24, 0x70	; 112
+ 156:	92 e0       	ldi	r25, 0x02	; 2
+ 158:	21 50       	subi	r18, 0x01	; 1
+ 15a:	80 40       	sbci	r24, 0x00	; 0
+ 15c:	90 40       	sbci	r25, 0x00	; 0
+ 15e:	e1 f7       	brne	.-8      	; 0x158 <send_sms+0xfa>
+ 160:	00 c0       	rjmp	.+0      	; 0x162 <send_sms+0x104>
+ 162:	00 00       	nop
+ 164:	80 e0       	ldi	r24, 0x00	; 0
+ 166:	90 e0       	ldi	r25, 0x00	; 0
+ 168:	66 d1       	rcall	.+716    	; 0x436 <ids_system>
+ 16a:	2f ef       	ldi	r18, 0xFF	; 255
+ 16c:	80 e7       	ldi	r24, 0x70	; 112
+ 16e:	92 e0       	ldi	r25, 0x02	; 2
+ 170:	21 50       	subi	r18, 0x01	; 1
+ 172:	80 40       	sbci	r24, 0x00	; 0
+ 174:	90 40       	sbci	r25, 0x00	; 0
+ 176:	e1 f7       	brne	.-8      	; 0x170 <send_sms+0x112>
+ 178:	00 c0       	rjmp	.+0      	; 0x17a <send_sms+0x11c>
+ 17a:	00 00       	nop
+ 17c:	8f cf       	rjmp	.-226    	; 0x9c <send_sms+0x3e>
+
+0000017e <__vector_11>:
+ 17e:	1f 92       	push	r1
+ 180:	0f 92       	push	r0
+ 182:	0f b6       	in	r0, 0x3f	; 63
+ 184:	0f 92       	push	r0
+ 186:	11 24       	eor	r1, r1
+ 188:	2f 93       	push	r18
+ 18a:	8f 93       	push	r24
+ 18c:	9f 93       	push	r25
+ 18e:	ef 93       	push	r30
+ 190:	ff 93       	push	r31
+ 192:	2c b1       	in	r18, 0x0c	; 12
+ 194:	2d 30       	cpi	r18, 0x0D	; 13
+ 196:	a9 f0       	breq	.+42     	; 0x1c2 <__vector_11+0x44>
+ 198:	2a 30       	cpi	r18, 0x0A	; 10
+ 19a:	99 f0       	breq	.+38     	; 0x1c2 <__vector_11+0x44>
+ 19c:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <x>
+ 1a0:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <x+0x1>
+ 1a4:	fc 01       	movw	r30, r24
+ 1a6:	ec 5e       	subi	r30, 0xEC	; 236
+ 1a8:	fe 4f       	sbci	r31, 0xFE	; 254
+ 1aa:	20 83       	st	Z, r18
+ 1ac:	01 96       	adiw	r24, 0x01	; 1
+ 1ae:	90 93 0d 01 	sts	0x010D, r25	; 0x80010d <x+0x1>
+ 1b2:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <x>
+ 1b6:	81 e0       	ldi	r24, 0x01	; 1
+ 1b8:	90 e0       	ldi	r25, 0x00	; 0
+ 1ba:	90 93 0b 01 	sts	0x010B, r25	; 0x80010b <status+0x1>
+ 1be:	80 93 0a 01 	sts	0x010A, r24	; 0x80010a <status>
+ 1c2:	ff 91       	pop	r31
+ 1c4:	ef 91       	pop	r30
+ 1c6:	9f 91       	pop	r25
+ 1c8:	8f 91       	pop	r24
+ 1ca:	2f 91       	pop	r18
+ 1cc:	0f 90       	pop	r0
+ 1ce:	0f be       	out	0x3f, r0	; 63
+ 1d0:	0f 90       	pop	r0
+ 1d2:	1f 90       	pop	r1
+ 1d4:	18 95       	reti
+
+000001d6 <__vector_1>:
+ 1d6:	1f 92       	push	r1
+ 1d8:	0f 92       	push	r0
+ 1da:	0f b6       	in	r0, 0x3f	; 63
+ 1dc:	0f 92       	push	r0
+ 1de:	11 24       	eor	r1, r1
+ 1e0:	2f 93       	push	r18
+ 1e2:	3f 93       	push	r19
+ 1e4:	4f 93       	push	r20
+ 1e6:	5f 93       	push	r21
+ 1e8:	6f 93       	push	r22
+ 1ea:	7f 93       	push	r23
+ 1ec:	8f 93       	push	r24
+ 1ee:	9f 93       	push	r25
+ 1f0:	af 93       	push	r26
+ 1f2:	bf 93       	push	r27
+ 1f4:	ef 93       	push	r30
+ 1f6:	ff 93       	push	r31
+ 1f8:	10 92 07 01 	sts	0x0107, r1	; 0x800107 <system_flag+0x1>
+ 1fc:	10 92 06 01 	sts	0x0106, r1	; 0x800106 <system_flag>
+ 200:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <__data_end+0x1>
+ 204:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <__data_end>
+ 208:	40 d1       	rcall	.+640    	; 0x48a <ids_transmit_discon>
+ 20a:	80 e0       	ldi	r24, 0x00	; 0
+ 20c:	90 e0       	ldi	r25, 0x00	; 0
+ 20e:	13 d1       	rcall	.+550    	; 0x436 <ids_system>
+ 210:	63 e0       	ldi	r22, 0x03	; 3
+ 212:	80 e0       	ldi	r24, 0x00	; 0
+ 214:	90 e0       	ldi	r25, 0x00	; 0
+ 216:	eb d1       	rcall	.+982    	; 0x5ee <eeprom_write_byte>
+ 218:	ff 91       	pop	r31
+ 21a:	ef 91       	pop	r30
+ 21c:	bf 91       	pop	r27
+ 21e:	af 91       	pop	r26
+ 220:	9f 91       	pop	r25
+ 222:	8f 91       	pop	r24
+ 224:	7f 91       	pop	r23
+ 226:	6f 91       	pop	r22
+ 228:	5f 91       	pop	r21
+ 22a:	4f 91       	pop	r20
+ 22c:	3f 91       	pop	r19
+ 22e:	2f 91       	pop	r18
+ 230:	0f 90       	pop	r0
+ 232:	0f be       	out	0x3f, r0	; 63
+ 234:	0f 90       	pop	r0
+ 236:	1f 90       	pop	r1
+ 238:	18 95       	reti
+
+0000023a <__vector_2>:
+ 23a:	1f 92       	push	r1
+ 23c:	0f 92       	push	r0
+ 23e:	0f b6       	in	r0, 0x3f	; 63
+ 240:	0f 92       	push	r0
+ 242:	11 24       	eor	r1, r1
+ 244:	2f 93       	push	r18
+ 246:	3f 93       	push	r19
+ 248:	4f 93       	push	r20
+ 24a:	5f 93       	push	r21
+ 24c:	6f 93       	push	r22
+ 24e:	7f 93       	push	r23
+ 250:	8f 93       	push	r24
+ 252:	9f 93       	push	r25
+ 254:	af 93       	push	r26
+ 256:	bf 93       	push	r27
+ 258:	ef 93       	push	r30
+ 25a:	ff 93       	push	r31
+ 25c:	81 e0       	ldi	r24, 0x01	; 1
+ 25e:	90 e0       	ldi	r25, 0x00	; 0
+ 260:	90 93 07 01 	sts	0x0107, r25	; 0x800107 <system_flag+0x1>
+ 264:	80 93 06 01 	sts	0x0106, r24	; 0x800106 <system_flag>
+ 268:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <__data_end+0x1>
+ 26c:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <__data_end>
+ 270:	62 e0       	ldi	r22, 0x02	; 2
+ 272:	80 e0       	ldi	r24, 0x00	; 0
+ 274:	90 e0       	ldi	r25, 0x00	; 0
+ 276:	bb d1       	rcall	.+886    	; 0x5ee <eeprom_write_byte>
+ 278:	ff 91       	pop	r31
+ 27a:	ef 91       	pop	r30
+ 27c:	bf 91       	pop	r27
+ 27e:	af 91       	pop	r26
+ 280:	9f 91       	pop	r25
+ 282:	8f 91       	pop	r24
+ 284:	7f 91       	pop	r23
+ 286:	6f 91       	pop	r22
+ 288:	5f 91       	pop	r21
+ 28a:	4f 91       	pop	r20
+ 28c:	3f 91       	pop	r19
+ 28e:	2f 91       	pop	r18
+ 290:	0f 90       	pop	r0
+ 292:	0f be       	out	0x3f, r0	; 63
+ 294:	0f 90       	pop	r0
+ 296:	1f 90       	pop	r1
+ 298:	18 95       	reti
+
+0000029a <main>:
+ 29a:	ba d0       	rcall	.+372    	; 0x410 <ids_port_init>
+ 29c:	a0 9a       	sbi	0x14, 0	; 20
+ 29e:	2f ef       	ldi	r18, 0xFF	; 255
+ 2a0:	89 e6       	ldi	r24, 0x69	; 105
+ 2a2:	98 e1       	ldi	r25, 0x18	; 24
+ 2a4:	21 50       	subi	r18, 0x01	; 1
+ 2a6:	80 40       	sbci	r24, 0x00	; 0
+ 2a8:	90 40       	sbci	r25, 0x00	; 0
+ 2aa:	e1 f7       	brne	.-8      	; 0x2a4 <main+0xa>
+ 2ac:	00 c0       	rjmp	.+0      	; 0x2ae <main+0x14>
+ 2ae:	00 00       	nop
+ 2b0:	a0 98       	cbi	0x14, 0	; 20
+ 2b2:	ba d0       	rcall	.+372    	; 0x428 <ids_extint_init>
+ 2b4:	cc d0       	rcall	.+408    	; 0x44e <ids_usart_init>
+ 2b6:	80 e0       	ldi	r24, 0x00	; 0
+ 2b8:	90 e0       	ldi	r25, 0x00	; 0
+ 2ba:	91 d1       	rcall	.+802    	; 0x5de <eeprom_read_byte>
+ 2bc:	82 30       	cpi	r24, 0x02	; 2
+ 2be:	59 f5       	brne	.+86     	; 0x316 <main+0x7c>
+ 2c0:	81 e0       	ldi	r24, 0x01	; 1
+ 2c2:	90 e0       	ldi	r25, 0x00	; 0
+ 2c4:	b8 d0       	rcall	.+368    	; 0x436 <ids_system>
+ 2c6:	84 e8       	ldi	r24, 0x84	; 132
+ 2c8:	90 e0       	ldi	r25, 0x00	; 0
+ 2ca:	c9 de       	rcall	.-622    	; 0x5e <send_sms>
+ 2cc:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <status+0x1>
+ 2d0:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <status>
+ 2d4:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <x+0x1>
+ 2d8:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <x>
+ 2dc:	86 d0       	rcall	.+268    	; 0x3ea <ids_mrs_read>
+ 2de:	89 2b       	or	r24, r25
+ 2e0:	71 f5       	brne	.+92     	; 0x33e <main+0xa4>
+ 2e2:	2f ef       	ldi	r18, 0xFF	; 255
+ 2e4:	84 e3       	ldi	r24, 0x34	; 52
+ 2e6:	9c e0       	ldi	r25, 0x0C	; 12
+ 2e8:	21 50       	subi	r18, 0x01	; 1
+ 2ea:	80 40       	sbci	r24, 0x00	; 0
+ 2ec:	90 40       	sbci	r25, 0x00	; 0
+ 2ee:	e1 f7       	brne	.-8      	; 0x2e8 <main+0x4e>
+ 2f0:	00 c0       	rjmp	.+0      	; 0x2f2 <main+0x58>
+ 2f2:	00 00       	nop
+ 2f4:	7a d0       	rcall	.+244    	; 0x3ea <ids_mrs_read>
+ 2f6:	89 2b       	or	r24, r25
+ 2f8:	11 f5       	brne	.+68     	; 0x33e <main+0xa4>
+ 2fa:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <active_flag>
+ 2fe:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <active_flag+0x1>
+ 302:	89 2b       	or	r24, r25
+ 304:	e1 f4       	brne	.+56     	; 0x33e <main+0xa4>
+ 306:	80 d0       	rcall	.+256    	; 0x408 <ids_raisealarm>
+ 308:	81 e0       	ldi	r24, 0x01	; 1
+ 30a:	90 e0       	ldi	r25, 0x00	; 0
+ 30c:	90 93 09 01 	sts	0x0109, r25	; 0x800109 <active_flag+0x1>
+ 310:	80 93 08 01 	sts	0x0108, r24	; 0x800108 <active_flag>
+ 314:	14 c0       	rjmp	.+40     	; 0x33e <main+0xa4>
+ 316:	83 30       	cpi	r24, 0x03	; 3
+ 318:	91 f4       	brne	.+36     	; 0x33e <main+0xa4>
+ 31a:	80 e0       	ldi	r24, 0x00	; 0
+ 31c:	90 e0       	ldi	r25, 0x00	; 0
+ 31e:	8b d0       	rcall	.+278    	; 0x436 <ids_system>
+ 320:	80 e6       	ldi	r24, 0x60	; 96
+ 322:	90 e0       	ldi	r25, 0x00	; 0
+ 324:	9c de       	rcall	.-712    	; 0x5e <send_sms>
+ 326:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <status+0x1>
+ 32a:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <status>
+ 32e:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <x+0x1>
+ 332:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <x>
+ 336:	10 92 09 01 	sts	0x0109, r1	; 0x800109 <active_flag+0x1>
+ 33a:	10 92 08 01 	sts	0x0108, r1	; 0x800108 <active_flag>
+ 33e:	80 91 0a 01 	lds	r24, 0x010A	; 0x80010a <status>
+ 342:	90 91 0b 01 	lds	r25, 0x010B	; 0x80010b <status+0x1>
+ 346:	01 97       	sbiw	r24, 0x01	; 1
+ 348:	09 f0       	breq	.+2      	; 0x34c <main+0xb2>
+ 34a:	b5 cf       	rjmp	.-150    	; 0x2b6 <main+0x1c>
+ 34c:	63 ef       	ldi	r22, 0xF3	; 243
+ 34e:	70 e0       	ldi	r23, 0x00	; 0
+ 350:	84 e1       	ldi	r24, 0x14	; 20
+ 352:	91 e0       	ldi	r25, 0x01	; 1
+ 354:	2a d1       	rcall	.+596    	; 0x5aa <strstr>
+ 356:	89 2b       	or	r24, r25
+ 358:	09 f4       	brne	.+2      	; 0x35c <main+0xc2>
+ 35a:	ad cf       	rjmp	.-166    	; 0x2b6 <main+0x1c>
+ 35c:	69 ef       	ldi	r22, 0xF9	; 249
+ 35e:	70 e0       	ldi	r23, 0x00	; 0
+ 360:	84 e1       	ldi	r24, 0x14	; 20
+ 362:	91 e0       	ldi	r25, 0x01	; 1
+ 364:	22 d1       	rcall	.+580    	; 0x5aa <strstr>
+ 366:	89 2b       	or	r24, r25
+ 368:	11 f0       	breq	.+4      	; 0x36e <main+0xd4>
+ 36a:	62 e0       	ldi	r22, 0x02	; 2
+ 36c:	08 c0       	rjmp	.+16     	; 0x37e <main+0xe4>
+ 36e:	6c ef       	ldi	r22, 0xFC	; 252
+ 370:	70 e0       	ldi	r23, 0x00	; 0
+ 372:	84 e1       	ldi	r24, 0x14	; 20
+ 374:	91 e0       	ldi	r25, 0x01	; 1
+ 376:	19 d1       	rcall	.+562    	; 0x5aa <strstr>
+ 378:	89 2b       	or	r24, r25
+ 37a:	41 f0       	breq	.+16     	; 0x38c <main+0xf2>
+ 37c:	63 e0       	ldi	r22, 0x03	; 3
+ 37e:	80 e0       	ldi	r24, 0x00	; 0
+ 380:	90 e0       	ldi	r25, 0x00	; 0
+ 382:	35 d1       	rcall	.+618    	; 0x5ee <eeprom_write_byte>
+ 384:	10 92 05 01 	sts	0x0105, r1	; 0x800105 <__data_end+0x1>
+ 388:	10 92 04 01 	sts	0x0104, r1	; 0x800104 <__data_end>
+ 38c:	10 92 0f 01 	sts	0x010F, r1	; 0x80010f <i+0x1>
+ 390:	10 92 0e 01 	sts	0x010E, r1	; 0x80010e <i>
+ 394:	10 92 0b 01 	sts	0x010B, r1	; 0x80010b <status+0x1>
+ 398:	10 92 0a 01 	sts	0x010A, r1	; 0x80010a <status>
+ 39c:	10 92 0d 01 	sts	0x010D, r1	; 0x80010d <x+0x1>
+ 3a0:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <x>
+ 3a4:	e4 e1       	ldi	r30, 0x14	; 20
+ 3a6:	f1 e0       	ldi	r31, 0x01	; 1
+ 3a8:	80 81       	ld	r24, Z
+ 3aa:	88 23       	and	r24, r24
+ 3ac:	09 f4       	brne	.+2      	; 0x3b0 <main+0x116>
+ 3ae:	83 cf       	rjmp	.-250    	; 0x2b6 <main+0x1c>
+ 3b0:	11 92       	st	Z+, r1
+ 3b2:	fa cf       	rjmp	.-12     	; 0x3a8 <main+0x10e>
+
+000003b4 <ids_siren>:
+ 3b4:	81 30       	cpi	r24, 0x01	; 1
+ 3b6:	91 05       	cpc	r25, r1
+ 3b8:	11 f4       	brne	.+4      	; 0x3be <ids_siren+0xa>
+ 3ba:	c1 9a       	sbi	0x18, 1	; 24
+ 3bc:	08 95       	ret
+ 3be:	89 2b       	or	r24, r25
+ 3c0:	09 f4       	brne	.+2      	; 0x3c4 <ids_siren+0x10>
+ 3c2:	c1 98       	cbi	0x18, 1	; 24
+ 3c4:	08 95       	ret
+
+000003c6 <ids_delayms>:
+ 3c6:	20 e0       	ldi	r18, 0x00	; 0
+ 3c8:	30 e0       	ldi	r19, 0x00	; 0
+ 3ca:	28 17       	cp	r18, r24
+ 3cc:	39 07       	cpc	r19, r25
+ 3ce:	61 f0       	breq	.+24     	; 0x3e8 <ids_delayms+0x22>
+ 3d0:	4f ef       	ldi	r20, 0xFF	; 255
+ 3d2:	50 e7       	ldi	r21, 0x70	; 112
+ 3d4:	62 e0       	ldi	r22, 0x02	; 2
+ 3d6:	41 50       	subi	r20, 0x01	; 1
+ 3d8:	50 40       	sbci	r21, 0x00	; 0
+ 3da:	60 40       	sbci	r22, 0x00	; 0
+ 3dc:	e1 f7       	brne	.-8      	; 0x3d6 <ids_delayms+0x10>
+ 3de:	00 c0       	rjmp	.+0      	; 0x3e0 <ids_delayms+0x1a>
+ 3e0:	00 00       	nop
+ 3e2:	2f 5f       	subi	r18, 0xFF	; 255
+ 3e4:	3f 4f       	sbci	r19, 0xFF	; 255
+ 3e6:	f1 cf       	rjmp	.-30     	; 0x3ca <ids_delayms+0x4>
+ 3e8:	08 95       	ret
+
+000003ea <ids_mrs_read>:
+ 3ea:	83 b3       	in	r24, 0x13	; 19
+ 3ec:	83 b3       	in	r24, 0x13	; 19
+ 3ee:	93 b3       	in	r25, 0x13	; 19
+ 3f0:	83 b3       	in	r24, 0x13	; 19
+ 3f2:	93 fd       	sbrc	r25, 3
+ 3f4:	06 c0       	rjmp	.+12     	; 0x402 <__LOCK_REGION_LENGTH__+0x2>
+ 3f6:	82 95       	swap	r24
+ 3f8:	8f 70       	andi	r24, 0x0F	; 15
+ 3fa:	91 e0       	ldi	r25, 0x01	; 1
+ 3fc:	89 27       	eor	r24, r25
+ 3fe:	81 70       	andi	r24, 0x01	; 1
+ 400:	01 c0       	rjmp	.+2      	; 0x404 <__LOCK_REGION_LENGTH__+0x4>
+ 402:	80 e0       	ldi	r24, 0x00	; 0
+ 404:	90 e0       	ldi	r25, 0x00	; 0
+ 406:	08 95       	ret
+
+00000408 <ids_raisealarm>:
+ 408:	81 e0       	ldi	r24, 0x01	; 1
+ 40a:	90 e0       	ldi	r25, 0x00	; 0
+ 40c:	d3 df       	rcall	.-90     	; 0x3b4 <ids_siren>
+ 40e:	29 c0       	rjmp	.+82     	; 0x462 <ids_transmit_call>
+
+00000410 <ids_port_init>:
+ 410:	b9 9a       	sbi	0x17, 1	; 23
+ 412:	a0 9a       	sbi	0x14, 0	; 20
+ 414:	81 b3       	in	r24, 0x11	; 17
+ 416:	80 6f       	ori	r24, 0xF0	; 240
+ 418:	81 bb       	out	0x11, r24	; 17
+ 41a:	85 b3       	in	r24, 0x15	; 21
+ 41c:	8e 63       	ori	r24, 0x3E	; 62
+ 41e:	85 bb       	out	0x15, r24	; 21
+ 420:	82 b3       	in	r24, 0x12	; 18
+ 422:	80 69       	ori	r24, 0x90	; 144
+ 424:	82 bb       	out	0x12, r24	; 18
+ 426:	08 95       	ret
+
+00000428 <ids_extint_init>:
+ 428:	8b b7       	in	r24, 0x3b	; 59
+ 42a:	80 6c       	ori	r24, 0xC0	; 192
+ 42c:	8b bf       	out	0x3b, r24	; 59
+ 42e:	85 e0       	ldi	r24, 0x05	; 5
+ 430:	85 bf       	out	0x35, r24	; 53
+ 432:	78 94       	sei
+ 434:	08 95       	ret
+
+00000436 <ids_system>:
+ 436:	81 30       	cpi	r24, 0x01	; 1
+ 438:	91 05       	cpc	r25, r1
+ 43a:	11 f4       	brne	.+4      	; 0x440 <ids_system+0xa>
+ 43c:	96 9a       	sbi	0x12, 6	; 18
+ 43e:	08 95       	ret
+ 440:	89 2b       	or	r24, r25
+ 442:	21 f4       	brne	.+8      	; 0x44c <ids_system+0x16>
+ 444:	96 98       	cbi	0x12, 6	; 18
+ 446:	80 e0       	ldi	r24, 0x00	; 0
+ 448:	90 e0       	ldi	r25, 0x00	; 0
+ 44a:	b4 cf       	rjmp	.-152    	; 0x3b4 <ids_siren>
+ 44c:	08 95       	ret
+
+0000044e <ids_usart_init>:
+ 44e:	83 e3       	ldi	r24, 0x33	; 51
+ 450:	89 b9       	out	0x09, r24	; 9
+ 452:	10 bc       	out	0x20, r1	; 32
+ 454:	80 b5       	in	r24, 0x20	; 32
+ 456:	86 68       	ori	r24, 0x86	; 134
+ 458:	80 bd       	out	0x20, r24	; 32
+ 45a:	8a b1       	in	r24, 0x0a	; 10
+ 45c:	88 69       	ori	r24, 0x98	; 152
+ 45e:	8a b9       	out	0x0a, r24	; 10
+ 460:	08 95       	ret
+
+00000462 <ids_transmit_call>:
+ 462:	cf 93       	push	r28
+ 464:	df 93       	push	r29
+ 466:	cf ed       	ldi	r28, 0xDF	; 223
+ 468:	d0 e0       	ldi	r29, 0x00	; 0
+ 46a:	89 91       	ld	r24, Y+
+ 46c:	88 23       	and	r24, r24
+ 46e:	29 f0       	breq	.+10     	; 0x47a <ids_transmit_call+0x18>
+ 470:	8c b9       	out	0x0c, r24	; 12
+ 472:	81 e0       	ldi	r24, 0x01	; 1
+ 474:	90 e0       	ldi	r25, 0x00	; 0
+ 476:	a7 df       	rcall	.-178    	; 0x3c6 <ids_delayms>
+ 478:	f8 cf       	rjmp	.-16     	; 0x46a <ids_transmit_call+0x8>
+ 47a:	88 e2       	ldi	r24, 0x28	; 40
+ 47c:	90 e0       	ldi	r25, 0x00	; 0
+ 47e:	a3 df       	rcall	.-186    	; 0x3c6 <ids_delayms>
+ 480:	8a e0       	ldi	r24, 0x0A	; 10
+ 482:	8c b9       	out	0x0c, r24	; 12
+ 484:	df 91       	pop	r29
+ 486:	cf 91       	pop	r28
+ 488:	08 95       	ret
+
+0000048a <ids_transmit_discon>:
+ 48a:	cf 93       	push	r28
+ 48c:	df 93       	push	r29
+ 48e:	ca ed       	ldi	r28, 0xDA	; 218
+ 490:	d0 e0       	ldi	r29, 0x00	; 0
+ 492:	89 91       	ld	r24, Y+
+ 494:	88 23       	and	r24, r24
+ 496:	29 f0       	breq	.+10     	; 0x4a2 <ids_transmit_discon+0x18>
+ 498:	8c b9       	out	0x0c, r24	; 12
+ 49a:	81 e0       	ldi	r24, 0x01	; 1
+ 49c:	90 e0       	ldi	r25, 0x00	; 0
+ 49e:	93 df       	rcall	.-218    	; 0x3c6 <ids_delayms>
+ 4a0:	f8 cf       	rjmp	.-16     	; 0x492 <ids_transmit_discon+0x8>
+ 4a2:	8a e0       	ldi	r24, 0x0A	; 10
+ 4a4:	8c b9       	out	0x0c, r24	; 12
+ 4a6:	df 91       	pop	r29
+ 4a8:	cf 91       	pop	r28
+ 4aa:	08 95       	ret
+
+000004ac <ids_send_sms>:
+ 4ac:	ef 92       	push	r14
+ 4ae:	ff 92       	push	r15
+ 4b0:	0f 93       	push	r16
+ 4b2:	1f 93       	push	r17
+ 4b4:	cf 93       	push	r28
+ 4b6:	df 93       	push	r29
+ 4b8:	7c 01       	movw	r14, r24
+ 4ba:	8b 01       	movw	r16, r22
+ 4bc:	c1 eb       	ldi	r28, 0xB1	; 177
+ 4be:	d0 e0       	ldi	r29, 0x00	; 0
+ 4c0:	99 91       	ld	r25, Y+
+ 4c2:	99 23       	and	r25, r25
+ 4c4:	29 f0       	breq	.+10     	; 0x4d0 <ids_send_sms+0x24>
+ 4c6:	9c b9       	out	0x0c, r25	; 12
+ 4c8:	81 e0       	ldi	r24, 0x01	; 1
+ 4ca:	90 e0       	ldi	r25, 0x00	; 0
+ 4cc:	7c df       	rcall	.-264    	; 0x3c6 <ids_delayms>
+ 4ce:	f8 cf       	rjmp	.-16     	; 0x4c0 <ids_send_sms+0x14>
+ 4d0:	84 e1       	ldi	r24, 0x14	; 20
+ 4d2:	90 e0       	ldi	r25, 0x00	; 0
+ 4d4:	78 df       	rcall	.-272    	; 0x3c6 <ids_delayms>
+ 4d6:	8a e0       	ldi	r24, 0x0A	; 10
+ 4d8:	8c b9       	out	0x0c, r24	; 12
+ 4da:	b7 01       	movw	r22, r14
+ 4dc:	87 ea       	ldi	r24, 0xA7	; 167
+ 4de:	90 e0       	ldi	r25, 0x00	; 0
+ 4e0:	59 d0       	rcall	.+178    	; 0x594 <strcat>
+ 4e2:	60 e0       	ldi	r22, 0x00	; 0
+ 4e4:	71 e0       	ldi	r23, 0x01	; 1
+ 4e6:	87 ea       	ldi	r24, 0xA7	; 167
+ 4e8:	90 e0       	ldi	r25, 0x00	; 0
+ 4ea:	54 d0       	rcall	.+168    	; 0x594 <strcat>
+ 4ec:	81 e0       	ldi	r24, 0x01	; 1
+ 4ee:	90 e0       	ldi	r25, 0x00	; 0
+ 4f0:	6a df       	rcall	.-300    	; 0x3c6 <ids_delayms>
+ 4f2:	c7 ea       	ldi	r28, 0xA7	; 167
+ 4f4:	d0 e0       	ldi	r29, 0x00	; 0
+ 4f6:	89 91       	ld	r24, Y+
+ 4f8:	88 23       	and	r24, r24
+ 4fa:	29 f0       	breq	.+10     	; 0x506 <ids_send_sms+0x5a>
+ 4fc:	8c b9       	out	0x0c, r24	; 12
+ 4fe:	81 e0       	ldi	r24, 0x01	; 1
+ 500:	90 e0       	ldi	r25, 0x00	; 0
+ 502:	61 df       	rcall	.-318    	; 0x3c6 <ids_delayms>
+ 504:	f8 cf       	rjmp	.-16     	; 0x4f6 <ids_send_sms+0x4a>
+ 506:	84 e1       	ldi	r24, 0x14	; 20
+ 508:	90 e0       	ldi	r25, 0x00	; 0
+ 50a:	5d df       	rcall	.-326    	; 0x3c6 <ids_delayms>
+ 50c:	8a e0       	ldi	r24, 0x0A	; 10
+ 50e:	8c b9       	out	0x0c, r24	; 12
+ 510:	81 e0       	ldi	r24, 0x01	; 1
+ 512:	90 e0       	ldi	r25, 0x00	; 0
+ 514:	58 df       	rcall	.-336    	; 0x3c6 <ids_delayms>
+ 516:	e8 01       	movw	r28, r16
+ 518:	89 91       	ld	r24, Y+
+ 51a:	88 23       	and	r24, r24
+ 51c:	29 f0       	breq	.+10     	; 0x528 <ids_send_sms+0x7c>
+ 51e:	8c b9       	out	0x0c, r24	; 12
+ 520:	81 e0       	ldi	r24, 0x01	; 1
+ 522:	90 e0       	ldi	r25, 0x00	; 0
+ 524:	50 df       	rcall	.-352    	; 0x3c6 <ids_delayms>
+ 526:	f8 cf       	rjmp	.-16     	; 0x518 <ids_send_sms+0x6c>
+ 528:	8a e1       	ldi	r24, 0x1A	; 26
+ 52a:	8c b9       	out	0x0c, r24	; 12
+ 52c:	84 e1       	ldi	r24, 0x14	; 20
+ 52e:	90 e0       	ldi	r25, 0x00	; 0
+ 530:	4a df       	rcall	.-364    	; 0x3c6 <ids_delayms>
+ 532:	8a e0       	ldi	r24, 0x0A	; 10
+ 534:	8c b9       	out	0x0c, r24	; 12
+ 536:	df 91       	pop	r29
+ 538:	cf 91       	pop	r28
+ 53a:	1f 91       	pop	r17
+ 53c:	0f 91       	pop	r16
+ 53e:	ff 90       	pop	r15
+ 540:	ef 90       	pop	r14
+ 542:	08 95       	ret
+
+00000544 <ids_select_mem>:
+ 544:	cf 93       	push	r28
+ 546:	df 93       	push	r29
+ 548:	cd ec       	ldi	r28, 0xCD	; 205
+ 54a:	d0 e0       	ldi	r29, 0x00	; 0
+ 54c:	89 91       	ld	r24, Y+
+ 54e:	88 23       	and	r24, r24
+ 550:	29 f0       	breq	.+10     	; 0x55c <ids_select_mem+0x18>
+ 552:	8c b9       	out	0x0c, r24	; 12
+ 554:	81 e0       	ldi	r24, 0x01	; 1
+ 556:	90 e0       	ldi	r25, 0x00	; 0
+ 558:	36 df       	rcall	.-404    	; 0x3c6 <ids_delayms>
+ 55a:	f8 cf       	rjmp	.-16     	; 0x54c <ids_select_mem+0x8>
+ 55c:	84 e1       	ldi	r24, 0x14	; 20
+ 55e:	90 e0       	ldi	r25, 0x00	; 0
+ 560:	32 df       	rcall	.-412    	; 0x3c6 <ids_delayms>
+ 562:	8a e0       	ldi	r24, 0x0A	; 10
+ 564:	8c b9       	out	0x0c, r24	; 12
+ 566:	df 91       	pop	r29
+ 568:	cf 91       	pop	r28
+ 56a:	08 95       	ret
+
+0000056c <ids_req_owner>:
+ 56c:	cf 93       	push	r28
+ 56e:	df 93       	push	r29
+ 570:	cb eb       	ldi	r28, 0xBB	; 187
+ 572:	d0 e0       	ldi	r29, 0x00	; 0
+ 574:	89 91       	ld	r24, Y+
+ 576:	88 23       	and	r24, r24
+ 578:	29 f0       	breq	.+10     	; 0x584 <ids_req_owner+0x18>
+ 57a:	8c b9       	out	0x0c, r24	; 12
+ 57c:	81 e0       	ldi	r24, 0x01	; 1
+ 57e:	90 e0       	ldi	r25, 0x00	; 0
+ 580:	22 df       	rcall	.-444    	; 0x3c6 <ids_delayms>
+ 582:	f8 cf       	rjmp	.-16     	; 0x574 <ids_req_owner+0x8>
+ 584:	84 e1       	ldi	r24, 0x14	; 20
+ 586:	90 e0       	ldi	r25, 0x00	; 0
+ 588:	1e df       	rcall	.-452    	; 0x3c6 <ids_delayms>
+ 58a:	8a e0       	ldi	r24, 0x0A	; 10
+ 58c:	8c b9       	out	0x0c, r24	; 12
+ 58e:	df 91       	pop	r29
+ 590:	cf 91       	pop	r28
+ 592:	08 95       	ret
+
+00000594 <strcat>:
+ 594:	fb 01       	movw	r30, r22
+ 596:	dc 01       	movw	r26, r24
+ 598:	0d 90       	ld	r0, X+
+ 59a:	00 20       	and	r0, r0
+ 59c:	e9 f7       	brne	.-6      	; 0x598 <strcat+0x4>
+ 59e:	11 97       	sbiw	r26, 0x01	; 1
+ 5a0:	01 90       	ld	r0, Z+
+ 5a2:	0d 92       	st	X+, r0
+ 5a4:	00 20       	and	r0, r0
+ 5a6:	e1 f7       	brne	.-8      	; 0x5a0 <strcat+0xc>
+ 5a8:	08 95       	ret
+
+000005aa <strstr>:
+ 5aa:	fb 01       	movw	r30, r22
+ 5ac:	51 91       	ld	r21, Z+
+ 5ae:	55 23       	and	r21, r21
+ 5b0:	a9 f0       	breq	.+42     	; 0x5dc <strstr+0x32>
+ 5b2:	bf 01       	movw	r22, r30
+ 5b4:	dc 01       	movw	r26, r24
+ 5b6:	4d 91       	ld	r20, X+
+ 5b8:	45 17       	cp	r20, r21
+ 5ba:	41 11       	cpse	r20, r1
+ 5bc:	e1 f7       	brne	.-8      	; 0x5b6 <strstr+0xc>
+ 5be:	59 f4       	brne	.+22     	; 0x5d6 <strstr+0x2c>
+ 5c0:	cd 01       	movw	r24, r26
+ 5c2:	01 90       	ld	r0, Z+
+ 5c4:	00 20       	and	r0, r0
+ 5c6:	49 f0       	breq	.+18     	; 0x5da <strstr+0x30>
+ 5c8:	4d 91       	ld	r20, X+
+ 5ca:	40 15       	cp	r20, r0
+ 5cc:	41 11       	cpse	r20, r1
+ 5ce:	c9 f3       	breq	.-14     	; 0x5c2 <strstr+0x18>
+ 5d0:	fb 01       	movw	r30, r22
+ 5d2:	41 11       	cpse	r20, r1
+ 5d4:	ef cf       	rjmp	.-34     	; 0x5b4 <strstr+0xa>
+ 5d6:	81 e0       	ldi	r24, 0x01	; 1
+ 5d8:	90 e0       	ldi	r25, 0x00	; 0
+ 5da:	01 97       	sbiw	r24, 0x01	; 1
+ 5dc:	08 95       	ret
+
+000005de <eeprom_read_byte>:
+ 5de:	e1 99       	sbic	0x1c, 1	; 28
+ 5e0:	fe cf       	rjmp	.-4      	; 0x5de <eeprom_read_byte>
+ 5e2:	9f bb       	out	0x1f, r25	; 31
+ 5e4:	8e bb       	out	0x1e, r24	; 30
+ 5e6:	e0 9a       	sbi	0x1c, 0	; 28
+ 5e8:	99 27       	eor	r25, r25
+ 5ea:	8d b3       	in	r24, 0x1d	; 29
+ 5ec:	08 95       	ret
+
+000005ee <eeprom_write_byte>:
+ 5ee:	26 2f       	mov	r18, r22
+
+000005f0 <eeprom_write_r18>:
+ 5f0:	e1 99       	sbic	0x1c, 1	; 28
+ 5f2:	fe cf       	rjmp	.-4      	; 0x5f0 <eeprom_write_r18>
+ 5f4:	9f bb       	out	0x1f, r25	; 31
+ 5f6:	8e bb       	out	0x1e, r24	; 30
+ 5f8:	2d bb       	out	0x1d, r18	; 29
+ 5fa:	0f b6       	in	r0, 0x3f	; 63
+ 5fc:	f8 94       	cli
+ 5fe:	e2 9a       	sbi	0x1c, 2	; 28
+ 600:	e1 9a       	sbi	0x1c, 1	; 28
+ 602:	0f be       	out	0x3f, r0	; 63
+ 604:	01 96       	adiw	r24, 0x01	; 1
+ 606:	08 95       	ret
+
+00000608 <_exit>:
+ 608:	f8 94       	cli
+
+0000060a <__stop_program>:
+ 60a:	ff cf       	rjmp	.-2      	; 0x60a <__stop_program>
