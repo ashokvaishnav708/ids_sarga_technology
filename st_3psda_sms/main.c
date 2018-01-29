@@ -56,6 +56,7 @@
 char info[150],num[20];
 char Temp;
 int s=0,j=0;
+int st=0;
 unsigned int i=0,x=0,status=0;
 char on_sms[] = {"Your security system is turned ON."};
 char off_sms[] = {"Your security system is turned OFF."};
@@ -101,7 +102,6 @@ void send_sms(char *sms)
 			{
 				x=0;
 				ids_send_sms(num, sms);
-				ids_system(OFF);
 				break;
 			}
 			else if(strstr(info,"ERROR")!='\0')
@@ -146,12 +146,14 @@ ISR(INT0_vect)
 	ids_transmit_discon();
  	ids_system(OFF);
 	eeprom_write_byte(000000,3);
+	st=1;
 }
 ISR(INT1_vect)
 {
 	system_flag = 1;
 	ack_flag = 0;
 	eeprom_write_byte(000000,2);
+	st=1;
 }
 
 
@@ -159,11 +161,6 @@ int main ()
 {
 	/* Port Initialization */
 	ids_port_init();
-	
-	// Buzzer Notification
-	DDRC |= (1<<PINC0);
-	_delay_ms(1000);
-	DDRC &=~ (1<<PINC0);
 
 	/* External Interrupt Initialization */
 	ids_extint_init();
@@ -174,13 +171,20 @@ int main ()
 	{	
 		if (eeprom_read_byte(000000)==2)
 		{
-			ids_system(ON);
-			send_sms(on_sms);	
-			status=0;
-			x=0;	
+			if (st==1)
+			{
+				// Buzzer Notification
+				PORTC |= (1<<PINC0);
+				_delay_ms(100);
+				PORTC &=~ (1<<PINC0);
+				ids_system(ON);
+				send_sms(on_sms);
+				status=0;
+				x=0;
+				st=0;
+			}	
 			if  ((/*(ids_pir_1() == true)||*/(ids_mrs_read() == 0)))
 			{
-	
 				_delay_ms(500);
 				if  ((/*(ids_pir_1() == 0)||*/(ids_mrs_read() == 0))&&(active_flag==0))
 				{
@@ -193,10 +197,19 @@ int main ()
 		}
 		else if(eeprom_read_byte(000000)==3)
 		{
-			ids_system(OFF);
-			send_sms(off_sms);
-			status=0;
-			x=0;
+			if (st==1)
+			{
+				// Buzzer Notification
+				PORTC |= (1<<PINC0);
+				_delay_ms(100);
+				PORTC &=~ (1<<PINC0);
+				ids_system(OFF);
+				send_sms(off_sms);
+				status=0;
+				x=0;
+				st=0;
+			}
+			
 			active_flag=0;
 			
 		}
@@ -209,11 +222,13 @@ int main ()
 				{
 					eeprom_write_byte(000000,2);
 					ack_flag = 0;
+					st=1;
 				}
 				else if (strstr(info,"Off")!=NULL)
 				{
 					eeprom_write_byte(000000,3);
 					ack_flag = 0;
+					st=1;
 				}
 				i=0;
 				status=0;
