@@ -38,6 +38,6 @@
 #ifndef  ST_PIR_H_
 #define ST_PIR_H_
 
-//int ids_pir_1();
+int ids_pir_1();
 
 #endif /* ST_PIR_H_ */

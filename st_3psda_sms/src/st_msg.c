@@ -40,7 +40,7 @@
 #include <avr/io.h>
 #include <st_msg.h>
 #include <st_alarmsys.h>
-#include <st_usart.h>
+//#include <st_usart.h>
 
 /* Activation of Alarm & Call System */
 
@@ -49,6 +49,5 @@ void ids_raisealarm()
 	/* Activate Alarm System */
 	ids_siren(ON);
 	/* Call to Owners */
-	ids_transmit_call();
 
 }

@@ -41,8 +41,8 @@
 #include <st_pir.h>
 
 /* Pull down Pin B0 */ 
-/*
+
 int ids_pir_1()
 {
 	return ((PINC & (1<<PINC5))==0);
-} */
+} 

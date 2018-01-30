@@ -104,25 +104,6 @@ void send_sms(char *sms)
 				ids_send_sms(num, sms);
 				break;
 			}
-			else if(strstr(info,"ERROR")!='\0')
-			{
-				ids_system(OFF);
-				break;
-			}
-			else
-			{
-				ids_system(ON);
-				_delay_ms(100);
-				ids_system(OFF);
-				_delay_ms(100);
-			}
-		}
-		else
-		{
-			ids_system(ON);
-			_delay_ms(100);
-			ids_system(OFF);
-			_delay_ms(100);
 		}
 	}
 }
@@ -183,15 +164,15 @@ int main ()
 				x=0;
 				st=0;
 			}	
-			if  ((/*(ids_pir_1() == true)||*/(ids_mrs_read() == 0)))
+			if  (((ids_pir_1() == true)||(ids_mrs_read() == 0)))
 			{
 				_delay_ms(500);
-				if  ((/*(ids_pir_1() == 0)||*/(ids_mrs_read() == 0))&&(active_flag==0))
+				if  (((ids_pir_1() == 0)||(ids_mrs_read() == 0))&&(active_flag==0))
 				{
 					/* Activate Communication & Alarm System */	
 					ids_raisealarm();
+					ids_transmit_call();
 					active_flag=1;
-						
 				}
 			}
 		}
@@ -209,7 +190,6 @@ int main ()
 				x=0;
 				st=0;
 			}
-			
 			active_flag=0;
 			
 		}
@@ -218,7 +198,7 @@ int main ()
 		{
 			if (strstr(info,"OWNER")!=NULL)
 			{		
-				if (strstr(info,"on")!=NULL)
+				if (strstr(info,"On")!=NULL)
 				{
 					eeprom_write_byte(000000,2);
 					ack_flag = 0;
@@ -238,8 +218,7 @@ int main ()
 					info[j] = '\0';
 				}
 			}
-		}
-				
+		}		
 	}
 	return 0;
 	}

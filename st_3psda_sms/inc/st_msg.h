@@ -43,6 +43,6 @@
 
 /*Activation of Alarm & Call System */
 void ids_raisealarm();
-void ids_transmit_call();
+//void ids_transmit_call();
 
 #endif /* INCFILE1_H_ */
