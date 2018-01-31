@@ -5,6 +5,6 @@
 
 /* Activate Whole System */
 void ids_system(int stat);
-
+void ids_beep(void);
 
 #endif  /* ST_System_H_ */

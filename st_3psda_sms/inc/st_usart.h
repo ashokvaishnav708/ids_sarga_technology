@@ -49,7 +49,8 @@
 
 void ids_usart_init(void);
 void ids_req_owner();
-void ids_transmit_call();
+void ids_transmit_call1();
+void ids_transmit_call2();
 void ids_transmit_discon();
 void ids_transmit_ack(int stat);
 void USART_Transmit( unsigned char data );

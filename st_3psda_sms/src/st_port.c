@@ -56,7 +56,6 @@ void ids_port_init(void)
 	DDRD |= ((1<<PIND7)|(1<<PIND6)|(1<<PIND5)|(1<<PIND4)); 
 	PORTC |= ((1<<PINC1)|(1<<PINC2)|(1<<PINC3)|(1<<PINC4)|(1<<PINC5));
 	PORTD |= (/*(1 << PIND2)|(1 <<PIND3)|*/(1<<PIND7)|(1<<PIND4));    // turn On the Pull-up
-
 }
 
 void ids_extint_init(void)

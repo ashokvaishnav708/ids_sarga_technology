@@ -10,7 +10,8 @@ src/st_system.d src/st_system.o: ../src/st_system.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../inc/st_system.h ../inc/st_alarmsys.h ../inc/st_usart.h
+ ../inc/st_system.h ../inc/st_alarmsys.h ../inc/st_usart.h \
+ ../inc/st_delay.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -39,3 +40,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../inc/st_alarmsys.h:
 
 ../inc/st_usart.h:
+
+../inc/st_delay.h:

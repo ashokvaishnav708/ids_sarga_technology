@@ -60,50 +60,42 @@ int st=0;
 unsigned int i=0,x=0,status=0;
 char on_sms[] = {"Your security system is turned ON."};
 char off_sms[] = {"Your security system is turned OFF."};
+char detect_sms[] = {"Intrudors Detected at your site."};
 
 volatile int remote_flag = 0;
 volatile int active_flag = 0; 
 volatile int system_flag = 0; 
-volatile int ack_flag = 0;
+volatile int int_flag = 0;
 
 void send_sms(char *);
 
 void send_sms(char *sms)
 {
+	s=0;
+	j=0;
 	x=0;
 	status=0;
 	ids_select_mem();
 	x=0;
 	status=0;
-	ids_delayms(2);
+	ids_delayms(1);
 	ids_req_owner();
-	ids_delayms(2);
-	while (1)
+	if(status==1)
 	{
-		if(status==1)
+		for (i=0;info[i]!='\0';i++)
 		{
-			for (i=0;info[i]!='\0';i++)
+			if (info[i]=='"') s++;
+			else if (s==3)
 			{
-				if (info[i]=='"')
-				{
-					s++;
-				}
-				else if (s==3)
-				{
-					num[j]=info[i];
-					j++;
-				}
-				else if (s==4)
-				{
-					break;
-				}
+				num[j]=info[i];
+				j++;
 			}
-			if((strlen(num)==10)||strlen(num)==13)
-			{
-				x=0;
-				ids_send_sms(num, sms);
-				break;
-			}
+			else if (s==4) break;
+		}
+		if((strlen(num)==10)||strlen(num)==13)
+		{
+			x=0;
+			ids_send_sms(num, sms);
 		}
 	}
 }
@@ -116,25 +108,25 @@ ISR(USART_RXC_vect)
 	{
 		info[x]=temp;
 		x++;
-		status=1;
 	}
+	status=1;
 }
 
 ISR(INT0_vect)
 {
 	system_flag = 0;
-	ack_flag = 0;
-	ids_transmit_discon();
- 	ids_system(OFF);
+	ids_beep();
+	int_flag=1;
+	ids_system(OFF);
 	eeprom_write_byte(000000,3);
-	st=1;
 }
 ISR(INT1_vect)
 {
 	system_flag = 1;
-	ack_flag = 0;
+	ids_beep();
+	int_flag=1;
+	ids_system(ON);
 	eeprom_write_byte(000000,2);
-	st=1;
 }
 
 
@@ -142,86 +134,80 @@ int main ()
 {
 	/* Port Initialization */
 	ids_port_init();
-
 	/* External Interrupt Initialization */
 	ids_extint_init();
 	/* USART Initialization */
 	ids_usart_init();
 	
+	for (j=0;j<150;j++)
+	{
+		info[j] = '\0';
+	}
+	x=0;
+	status=0;
 	while (1)
 	{	
 		if (eeprom_read_byte(000000)==2)
 		{
-			if (st==1)
-			{
-				// Buzzer Notification
-				PORTC |= (1<<PINC0);
-				_delay_ms(100);
-				PORTC &=~ (1<<PINC0);
-				ids_system(ON);
-				send_sms(on_sms);
-				status=0;
-				x=0;
-				st=0;
-			}	
-			if  (((ids_pir_1() == true)||(ids_mrs_read() == 0)))
+			//ids_system(ON);
+			if (((ids_pir_1() == true)||(ids_mrs_read() == 0)))
 			{
 				_delay_ms(500);
 				if  (((ids_pir_1() == 0)||(ids_mrs_read() == 0))&&(active_flag==0))
 				{
 					/* Activate Communication & Alarm System */	
 					ids_raisealarm();
-					ids_transmit_call();
+					ids_transmit_call1();
+					ids_delayms(400);
+					ids_transmit_discon();
+					ids_delayms(1);
+					ids_transmit_call2();
 					active_flag=1;
+					ids_delayms(20);
+					send_sms(detect_sms);
+					for (int j=0;info[j]!='\0';j++)
+					{
+						info[j] = '\0';
+					}
 				}
 			}
 		}
 		else if(eeprom_read_byte(000000)==3)
 		{
-			if (st==1)
-			{
-				// Buzzer Notification
-				PORTC |= (1<<PINC0);
-				_delay_ms(100);
-				PORTC &=~ (1<<PINC0);
-				ids_system(OFF);
-				send_sms(off_sms);
-				status=0;
-				x=0;
-				st=0;
-			}
+			//ids_system(OFF);
 			active_flag=0;
-			
 		}
-		
 		if (status==1)
 		{
 			if (strstr(info,"OWNER")!=NULL)
 			{		
-				if (strstr(info,"On")!=NULL)
+				if (strstr(info,"ON")!=NULL)
 				{
+					ids_beep();
+					ids_system(ON);
 					eeprom_write_byte(000000,2);
-					ack_flag = 0;
-					st=1;
+					send_sms(on_sms);
 				}
-				else if (strstr(info,"Off")!=NULL)
+				if (strstr(info,"OFF")!=NULL)
 				{
+					ids_beep();
+					ids_system(OFF);
 					eeprom_write_byte(000000,3);
-					ack_flag = 0;
-					st=1;
+					send_sms(off_sms);
 				}
-				i=0;
-				status=0;
 				x=0;
-				for (int j =0;info[j]!='\0';j++)
+				status=0;
+				for (int j=0;info[j]!='\0';j++)
 				{
 					info[j] = '\0';
 				}
 			}
+			x=0;
+			status=0;
 		}		
 	}
 	return 0;
-	}
+}
 
 
 

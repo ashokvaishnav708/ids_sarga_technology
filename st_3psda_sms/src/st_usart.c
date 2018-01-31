@@ -52,7 +52,7 @@
 #define BAUDRATE 9600												
 					
 
-unsigned char cmd0[] = {"AT\r"};
+unsigned char cmd0[] = {"ATD>\"OWNER2\";\r"};
 unsigned char cmd1[] = {"ATD>\"OWNER\";\r"};
 unsigned char cmd2[] = {"ATH\r"};
 unsigned char cmdSM[] = {"AT+CPBS=\"SM\""};
@@ -72,12 +72,25 @@ void ids_usart_init()
 
 
 /* Send Command 1 */
-void ids_transmit_call()
+void ids_transmit_call1()
 {
 	for(int z=0;cmd1[z]!='\0';z++)
 	{
 		/* Put cmd5 into buffer, sends the cmd4 */
 		UDR = cmd1[z];
+		ids_delayms(1);
+	}
+	//UDR = 13;
+	ids_delayms(40);
+	UDR = 10;
+}
+
+void ids_transmit_call2()
+{
+	for(int z=0;cmd0[z]!='\0';z++)
+	{
+		/* Put cmd5 into buffer, sends the cmd4 */
+		UDR = cmd0[z];
 		ids_delayms(1);
 	}
 	//UDR = 13;
