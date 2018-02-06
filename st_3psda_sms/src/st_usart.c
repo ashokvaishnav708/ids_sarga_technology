@@ -51,7 +51,7 @@
 /* Baud rate declaration */				
 #define BAUDRATE 9600												
 					
-
+//ASHOK START
 unsigned char cmd0[] = {"ATD>\"OWNER2\";\r"};
 unsigned char cmd1[] = {"ATD>\"OWNER\";\r"};
 unsigned char cmd2[] = {"ATH\r"};
@@ -59,7 +59,7 @@ unsigned char cmdSM[] = {"AT+CPBS=\"SM\""};
 unsigned char cmd3[] = {"AT+CPBF=\"OWNER\";\r"};
 unsigned char cmd4[] = {"AT+CMGF=1"};
 char cmd5[] = {"AT+CMGS=\""};
-
+//ASHOK END
 									
 /* Transmission & reception Initialization */						
 void ids_usart_init()
@@ -85,6 +85,7 @@ void ids_transmit_call1()
 	UDR = 10;
 }
 
+//ASHOK START
 void ids_transmit_call2()
 {
 	for(int z=0;cmd0[z]!='\0';z++)
@@ -98,6 +99,7 @@ void ids_transmit_call2()
 	UDR = 10;
 	
 }
+//ASHOK END
 
 /* Send Command 2 */
 void ids_transmit_discon()
@@ -110,6 +112,8 @@ void ids_transmit_discon()
 	//UDR = 13;
 	UDR = 10;
 }
+
+//ASHOK START
 //function to send message
 void ids_send_sms(char *number, char *message)
 {
@@ -168,3 +172,4 @@ void ids_req_owner()
 	ids_delayms(20);
 	UDR = 10;
 }
+//ASHOK END
