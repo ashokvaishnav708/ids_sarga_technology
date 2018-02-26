@@ -59,6 +59,7 @@ unsigned char cmdSM[] = {"AT+CPBS=\"SM\""};
 unsigned char cmd3[] = {"AT+CPBF=\"OWNER\";\r"};
 unsigned char cmd4[] = {"AT+CMGF=1"};
 char cmd5[] = {"AT+CMGS=\""};
+
 //ASHOK END
 									
 /* Transmission & reception Initialization */						
@@ -172,4 +173,7 @@ void ids_req_owner()
 	ids_delayms(20);
 	UDR = 10;
 }
+
+
+
 //ASHOK END

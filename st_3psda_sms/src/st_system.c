@@ -3,6 +3,7 @@
 #include <st_alarmsys.h>
 #include <st_usart.h>
 #include <st_delay.h>
+#include <st_msg.h>
 /* Activate Whole System */
 void ids_system(int stat)
 {

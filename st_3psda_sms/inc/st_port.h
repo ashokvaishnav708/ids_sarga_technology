@@ -39,5 +39,6 @@
 
 void ids_port_init(void);		
 void ids_extint_init(void);
+int ids_read_button(void);
 
 #endif /* PORTINIT_H_ */

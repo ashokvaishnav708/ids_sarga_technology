@@ -47,6 +47,7 @@
 /* Baud rate declaration */		
 #define BAUDRATE 9600												
 
+
 void ids_usart_init(void);
 void ids_req_owner();
 void ids_transmit_call1();
@@ -56,5 +57,6 @@ void ids_transmit_ack(int stat);
 void USART_Transmit( unsigned char data );
 void ids_select_mem(void);
 void ids_send_sms(char *, char *);
+
 
 #endif /* USART_H_ */

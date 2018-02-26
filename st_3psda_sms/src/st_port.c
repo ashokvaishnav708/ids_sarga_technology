@@ -44,7 +44,6 @@
 #include <util/delay.h>
 #include <st_port.h>
 
-
 /* Port Initialization */
 void ids_port_init(void)
 {
@@ -64,4 +63,9 @@ void ids_extint_init(void)
 	GICR |= ((1 << INT0)|(1 << INT1));      // Turns on INT0
 	MCUCR = 0x05;
 	sei();                    // turn on interrupts
+}
+
+int ids_read_button()
+{
+	return (PINC & (1<<PINC1));
 }

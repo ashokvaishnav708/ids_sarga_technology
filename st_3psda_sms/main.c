@@ -53,17 +53,20 @@
 #include <st_system.h>
 #include <st_delay.h>
 
-char info[150],num[20];
-char Temp;
-int s=0,j=0;
-int st=0;
-int i=0,x=0,status=0;
-char on_sms[] = {"Your security system is turned On."};
-char off_sms[] = {"Your security system is turned Off."};
-char sms1[] = {"Alert! Intruders Detected in your premises."};
-char sms2[] = {"Kindly take appropriate action."};
-char sms3[] = {"Hope you have taken necessary action."};
+int st=0; // for debugging double beep problem
+int i=0; // used for USART interrupt status
+char on_sms[] = {"Your security system is turned On."}; // message to acknowledge the ON status
+char off_sms[] = {"Your security system is turned Off."}; // message to acknowledge the OFF status
 
+/* Messages to be sent to owner when intruder detected*/
+char sms1[] = {"Beware Sir/Madam! Be alert someone entering your showroom with criminal intent."}; // First message
+char sms2[] = {"Hope Sir/Madam you took measures and arrived at your showroom to check intruder."}; // Second message
+char sms3[] = {"Kindly switch off the alarm once you reach and check box, connections before restoring."}; // Third message
+
+int s=0,j=0; // variables required while fetching owner number
+int x=0,status=0; // used for USART interrupt status
+char info[150],num[20]; // 'info' for USART buffer and 'num' for storing owner number
+/* Flags for future purpose*/
 volatile int remote_flag = 0;
 volatile int active_flag = 0; 
 volatile int system_flag = 0; 
@@ -71,9 +74,10 @@ volatile int int_flag = 0;
 
 
 // ASHOK START
-int get_owner(void);
+int ids_get_owner(void); // To get owner contact from SIM
+void ids_on_stuff(void);
 
-int get_owner()
+int ids_get_owner()
 {
 	int ret=0;
 	s=0;
@@ -87,12 +91,12 @@ int get_owner()
 	ids_req_owner();
 	if(status==1)
 	{
-		for (i=0;info[i]!='\0';i++)
+		for (int z=0;info[z]!='\0';z++)
 		{
-			if (info[i]=='"') s++;
+			if (info[z]=='"') s++;
 			else if (s==3)
 			{
-				num[j]=info[i];
+				num[j]=info[z];
 				j++;
 			}
 			else if (s==4) break;
@@ -109,11 +113,40 @@ int get_owner()
 	return ret;
 }
 
+void ids_on_stuff()
+{
+	/* Activate Communication & Alarm System */
+	ids_raisealarm();
+	// ASHOK START
+	ids_transmit_call1(); // Call to OWNER1
+	ids_delayms(350); // delay of 35 seconds
+	ids_transmit_discon();
+	ids_delayms(1);
+	ids_transmit_call2(); // Call to OWNER2
+	ids_delayms(350); // delay of 35 seconds
+	ids_transmit_discon();
+	x=0;
+	ids_delayms(1);
+	ids_send_sms(num, sms1); // send first sms
+	x=0;
+	ids_delayms(300); // delay of 30 seconds
+	ids_send_sms(num, sms2); // send second sms
+	x=0;
+	ids_delayms(300); // delay of 30 seconds
+	ids_send_sms(num, sms3); // send third sms
+	ids_delayms(10);
+	active_flag=1;
+	x=0;
+	status=0;
+	// ASHOK END
+}
+
+/* ISR for USART*/
 ISR(USART_RXC_vect)
 {
 	char temp;
 	temp=UDR;
-	if (temp!='\r'&&temp!='\n')
+	if (temp!='\r'&&temp!='\n') // Removing Newline and Start character from USART buffer
 	{
 		info[x]=temp;
 		x++;
@@ -123,18 +156,21 @@ ISR(USART_RXC_vect)
 
 // ASHOK END
 
+/* ISR for OFF Signal from Remote*/
 ISR(INT0_vect)
 {
 	if (st==0)
 	{
 		st=1;
-		ids_beep();
+		ids_beep(); // beep buzzer once
 	}
 	system_flag = 0;
 	int_flag=1;
 	ids_system(OFF);
-	eeprom_write_byte(000000,3);
+	ids_transmit_discon();
+	eeprom_write_byte(000000,3); 
 }
+/* ISR for ON Signal from Remote*/
 ISR(INT1_vect)
 {
 	if (st==0)
@@ -158,68 +194,57 @@ int main ()
 	ids_extint_init();
 	/* USART Initialization */
 	ids_usart_init();
-	ids_delayms(30);
-	
+	ids_delayms(30); // Delay until USART initializes completely
+	/* Getting OWNER Number from SIM*/
 	do 
 	{
 		ids_system(ON);
-		owner=get_owner();
+		owner=ids_get_owner(); // returns 1 if GOT owner number else 0
 		ids_system(OFF);
 	} while (owner!=1);
+	
 	x=0;
 	status=0;
+	/* Cleaning USART buffer */
 	for (i=0;i<150;i++)
 	{
 		info[i]='\0';
 	}
+	/* Infinite Loop*/
 	while (1)
 	{
+		if (ids_read_button())
+		{
+			ids_on_stuff();
+		}
 		if (eeprom_read_byte(000000)==2)
 		{
+			/* System is ON now */
 			x=0;
 			status=0;
 			ids_delayms(5);
 			st=0;
-			if (((ids_pir_1() == true)||(ids_mrs_read() == 0)))
+			/* Checking Sensors Indication */
+			if (((ids_pir_1() == true)||(ids_mrs_read() == 0))) 
 			{
 				_delay_ms(500);
 				if  (((ids_pir_1() == 0)||(ids_mrs_read() == 0))&&(active_flag==0))
 				{
-					/* Activate Communication & Alarm System */
-					ids_raisealarm();
-					// ASHOK START
-					ids_transmit_call1();
-					ids_delayms(350);
-					ids_transmit_discon();
-					ids_delayms(1);
-					ids_transmit_call2();
-					ids_delayms(350);
-					ids_transmit_discon();
-					x=0;
-					ids_delayms(1);
-					ids_send_sms(num, sms1);
-					x=0;
-					ids_delayms(300);
-					ids_send_sms(num, sms2);
-					x=0;
-					ids_delayms(300);
-					ids_send_sms(num, sms3);
-					ids_delayms(10);
-					active_flag=1;
-					x=0;
-					status=0;
-					// ASHOK END
+					ids_on_stuff();
 				}
 			}
 		}
 		else if(eeprom_read_byte(000000)==3)
 		{
+			/* System is OFF now */
 			x=0;
 			status=0;
 			ids_delayms(5);
 			st=0;
 			active_flag=0;
 		}
+		
+		/* check sms arrival for arming and disarming */
 		//ASHOK START
 		if (status==1)
 		{
@@ -227,6 +252,7 @@ int main ()
 			{
 				if (strstr(info,"ON")!=NULL)
 				{
+					/* SMS arrived for ON */
 					ids_beep();
 					ids_system(ON);
 					eeprom_write_byte(000000,2);
@@ -234,15 +260,18 @@ int main ()
 				}
 				else if (strstr(info,"OFF")!=NULL)
 				{
+					/* SMS arrived for OFF */
 					ids_beep();
 					ids_system(OFF);
 					eeprom_write_byte(000000,3);
 					ids_send_sms(num ,off_sms);
 				}
+				/* Clean USART buffer */
 				for (i=0;info[i]!='\0';i++)
 				{
 					info[i]='\0';
 				}
+				/* Reset USART variables */
 				i=0;
 				x=0;
 				status=0;

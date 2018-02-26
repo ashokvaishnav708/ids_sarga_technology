@@ -19,7 +19,6 @@ Allocating common symbols
 Common symbol       size              file
 
 info                0x96              main.o
-Temp                0x1               main.o
 num                 0x14              main.o
 
 Discarded input sections
@@ -40,8 +39,6 @@ Discarded input sections
  .text          0x00000000        0x0 src/st_mrs.o
  .data          0x00000000        0x0 src/st_mrs.o
  .bss           0x00000000        0x0 src/st_mrs.o
- .text.ids_mrs_2
-                0x00000000        0x8 src/st_mrs.o
  .text.ids_mrs_3
                 0x00000000        0x8 src/st_mrs.o
  .text.ids_mrs_4
@@ -332,42 +329,48 @@ END GROUP
                 0x0000005c                __vector_18
                 0x0000005e                . = ALIGN (0x2)
  *(.text.*)
- .text.get_owner
-                0x0000005e       0xcc main.o
-                0x0000005e                get_owner
+ .text.ids_get_owner
+                0x0000005e       0xbe main.o
+                0x0000005e                ids_get_owner
+ .text.ids_on_stuff
+                0x0000011c       0x88 main.o
+                0x0000011c                ids_on_stuff
  .text.__vector_11
-                0x0000012a       0x58 main.o
-                0x0000012a                __vector_11
+                0x000001a4       0x58 main.o
+                0x000001a4                __vector_11
  .text.__vector_1
-                0x00000182       0x80 main.o
-                0x00000182                __vector_1
+                0x000001fc       0x82 main.o
+                0x000001fc                __vector_1
  .text.__vector_2
-                0x00000202       0x7c main.o
-                0x00000202                __vector_2
+                0x0000027e       0x7c main.o
+                0x0000027e                __vector_2
  .text.startup.main
-                0x0000027e      0x1f8 main.o
-                0x0000027e                main
+                0x000002fa      0x176 main.o
+                0x000002fa                main
  .text.ids_siren
-                0x00000476       0x12 src/st_alarmsys.o
-                0x00000476                ids_siren
+                0x00000470       0x12 src/st_alarmsys.o
+                0x00000470                ids_siren
  .text.ids_delayms
-                0x00000488       0x24 src/st_delay.o
-                0x00000488                ids_delayms
+                0x00000482       0x24 src/st_delay.o
+                0x00000482                ids_delayms
  .text.ids_mrs_read
-                0x000004ac       0x1e src/st_mrs.o
-                0x000004ac                ids_mrs_read
+                0x000004a6       0x1c src/st_mrs.o
+                0x000004a6                ids_mrs_read
  .text.ids_raisealarm
-                0x000004ca        0x6 src/st_msg.o
-                0x000004ca                ids_raisealarm
+                0x000004c2        0x6 src/st_msg.o
+                0x000004c2                ids_raisealarm
  .text.ids_pir_1
-                0x000004d0       0x12 src/st_pir.o
-                0x000004d0                ids_pir_1
+                0x000004c8       0x12 src/st_pir.o
+                0x000004c8                ids_pir_1
  .text.ids_port_init
-                0x000004e2       0x18 src/st_port.o
-                0x000004e2                ids_port_init
+                0x000004da       0x18 src/st_port.o
+                0x000004da                ids_port_init
  .text.ids_extint_init
-                0x000004fa        0xe src/st_port.o
-                0x000004fa                ids_extint_init
+                0x000004f2        0xe src/st_port.o
+                0x000004f2                ids_extint_init
+ .text.ids_read_button
+                0x00000500        0x8 src/st_port.o
+                0x00000500                ids_read_button
  .text.ids_system
                 0x00000508       0x18 src/st_system.o
                 0x00000508                ids_system
@@ -435,83 +438,83 @@ END GROUP
  *(.fini0)
                 0x00000712                _etext = .
 
-.data           0x00800060      0x11e load address 0x00000712
+.data           0x00800060      0x1a6 load address 0x00000712
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.sms3     0x00800060       0x26 main.o
+ .data.sms3     0x00800060       0x58 main.o
                 0x00800060                sms3
- .data.sms2     0x00800086       0x20 main.o
-                0x00800086                sms2
- .data.sms1     0x008000a6       0x2c main.o
-                0x008000a6                sms1
- .data.off_sms  0x008000d2       0x24 main.o
-                0x008000d2                off_sms
- .data.on_sms   0x008000f6       0x23 main.o
-                0x008000f6                on_sms
- .data.cmd5     0x00800119        0xa src/st_usart.o
-                0x00800119                cmd5
- .data.cmd4     0x00800123        0xa src/st_usart.o
-                0x00800123                cmd4
- .data.cmd3     0x0080012d       0x12 src/st_usart.o
-                0x0080012d                cmd3
- .data.cmdSM    0x0080013f        0xd src/st_usart.o
-                0x0080013f                cmdSM
- .data.cmd2     0x0080014c        0x5 src/st_usart.o
-                0x0080014c                cmd2
- .data.cmd1     0x00800151        0xe src/st_usart.o
-                0x00800151                cmd1
- .data.cmd0     0x0080015f        0xf src/st_usart.o
-                0x0080015f                cmd0
+ .data.sms2     0x008000b8       0x51 main.o
+                0x008000b8                sms2
+ .data.sms1     0x00800109       0x50 main.o
+                0x00800109                sms1
+ .data.off_sms  0x00800159       0x24 main.o
+                0x00800159                off_sms
+ .data.on_sms   0x0080017d       0x23 main.o
+                0x0080017d                on_sms
+ .data.cmd5     0x008001a0        0xa src/st_usart.o
+                0x008001a0                cmd5
+ .data.cmd4     0x008001aa        0xa src/st_usart.o
+                0x008001aa                cmd4
+ .data.cmd3     0x008001b4       0x12 src/st_usart.o
+                0x008001b4                cmd3
+ .data.cmdSM    0x008001c6        0xd src/st_usart.o
+                0x008001c6                cmdSM
+ .data.cmd2     0x008001d3        0x5 src/st_usart.o
+                0x008001d3                cmd2
+ .data.cmd1     0x008001d8        0xe src/st_usart.o
+                0x008001d8                cmd1
+ .data.cmd0     0x008001e6        0xf src/st_usart.o
+                0x008001e6                cmd0
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x0080016e        0xd main.o
+                0x008001f5        0xd main.o
  .rodata.str1.1
-                0x0080017b        0x3 src/st_usart.o
+                0x00800202        0x3 src/st_usart.o
  *(.gnu.linkonce.d*)
-                0x0080017e                . = ALIGN (0x2)
-                0x0080017e                _edata = .
-                0x0080017e                PROVIDE (__data_end, .)
+                0x00800206                . = ALIGN (0x2)
+ *fill*         0x00800205        0x1 
+                0x00800206                _edata = .
+                0x00800206                PROVIDE (__data_end, .)
 
-.bss            0x0080017e       0xbd
-                0x0080017e                PROVIDE (__bss_start, .)
+.bss            0x00800206       0xbc
+                0x00800206                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.int_flag  0x0080017e        0x2 main.o
-                0x0080017e                int_flag
+ .bss.int_flag  0x00800206        0x2 main.o
+                0x00800206                int_flag
  .bss.system_flag
-                0x00800180        0x2 main.o
-                0x00800180                system_flag
+                0x00800208        0x2 main.o
+                0x00800208                system_flag
  .bss.active_flag
-                0x00800182        0x2 main.o
-                0x00800182                active_flag
- .bss.status    0x00800184        0x2 main.o
-                0x00800184                status
- .bss.x         0x00800186        0x2 main.o
-                0x00800186                x
- .bss.i         0x00800188        0x2 main.o
-                0x00800188                i
- .bss.st        0x0080018a        0x2 main.o
-                0x0080018a                st
- .bss.j         0x0080018c        0x2 main.o
-                0x0080018c                j
- .bss.s         0x0080018e        0x2 main.o
-                0x0080018e                s
+                0x0080020a        0x2 main.o
+                0x0080020a                active_flag
+ .bss.status    0x0080020c        0x2 main.o
+                0x0080020c                status
+ .bss.x         0x0080020e        0x2 main.o
+                0x0080020e                x
+ .bss.j         0x00800210        0x2 main.o
+                0x00800210                j
+ .bss.s         0x00800212        0x2 main.o
+                0x00800212                s
+ .bss.i         0x00800214        0x2 main.o
+                0x00800214                i
+ .bss.st        0x00800216        0x2 main.o
+                0x00800216                st
  *(COMMON)
- COMMON         0x00800190       0xab main.o
-                0x00800190                info
-                0x00800226                Temp
-                0x00800227                num
-                0x0080023b                PROVIDE (__bss_end, .)
+ COMMON         0x00800218       0xaa main.o
+                0x00800218                info
+                0x008002ae                num
+                0x008002c2                PROVIDE (__bss_end, .)
                 0x00000712                __data_load_start = LOADADDR (.data)
-                0x00000830                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000008b8                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080023b        0x0
+.noinit         0x008002c2        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080023b                _end = .
+                0x008002c2                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
