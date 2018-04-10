@@ -57,6 +57,6 @@ void ids_transmit_ack(int stat);
 void USART_Transmit( unsigned char data );
 void ids_select_mem(void);
 void ids_send_sms(char *, char *);
-
+void ids_on_detect_stuff(char *);
 
 #endif /* USART_H_ */
