@@ -67,5 +67,6 @@ void ids_extint_init(void)
 
 int ids_read_button()
 {
-	return !(PINC & (1<<PINC1));
+	
+	return ((PINC & (1<<PINC1))==0);
 }

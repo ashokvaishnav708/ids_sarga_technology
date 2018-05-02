@@ -52,10 +52,9 @@
 /* Baud rate declaration */				
 #define BAUDRATE 9600												
 
-/* Messages to be sent to owner when intruder detected*/
-char sms1[] = {"Beware Sir/Madam! Be alert someone entering your showroom with criminal intent."}; // First message
-char sms2[] = {"Hope Sir/Madam you took measures and arrived at your showroom to check intruder."}; // Second message
-char sms3[] = {"Kindly switch off the alarm once you reach and check box, connections before restoring."}; // Third message
+
+
+int terminate=0;
 					
 //ASHOK START
 unsigned char cmd0[] = {"ATD>\"OWNER2\";\r"};
@@ -77,28 +76,6 @@ void ids_usart_init()
 	UCSRB|=(1<<RXEN)|(1<<TXEN)|(1<<RXCIE);
 } 
 
-
-void ids_on_detect_stuff(char *num)
-{
-	/* Activate Communication & Alarm System */
-	ids_raisealarm();
-	// ASHOK START
-	ids_transmit_call1(); // Call to OWNER1
-	ids_delayms(350); // delay of 35 seconds
-	ids_transmit_discon();
-	ids_delayms(1);
-	ids_transmit_call2(); // Call to OWNER2
-	ids_delayms(350); // delay of 35 seconds
-	ids_transmit_discon();
-	ids_delayms(1);
-	ids_send_sms(num, sms1); // send first sms
-	ids_delayms(300); // delay of 30 seconds
-	ids_send_sms(num, sms2); // send second sms
-	ids_delayms(300); // delay of 30 seconds
-	ids_send_sms(num, sms3); // send third sms
-	ids_delayms(10);
-	// ASHOK END
-}
 
 /* Send Command 1 */
 void ids_transmit_call1()
@@ -142,9 +119,7 @@ void ids_transmit_discon()
 	UDR = 10;
 }
 
-//ASHOK START
-//function to send message
-void ids_send_sms(char *number, char *message)
+void ids_sms_txtmd()
 {
 	for(int z=0;cmd4[z]!='\0';z++)
 	{
@@ -153,6 +128,13 @@ void ids_send_sms(char *number, char *message)
 	}
 	ids_delayms(20);
 	UDR = 10;
+}
+
+//ASHOK START
+//functions to send message
+
+void ids_send_sms(char *number, char *message)
+{	
 	
 	strcat(cmd5, number);
 	strcat(cmd5, "\"\r");
@@ -176,9 +158,15 @@ void ids_send_sms(char *number, char *message)
 	UDR = 26;
 	ids_delayms(20);
 	UDR = 10;
+	
+	for (int z=0;cmd5[z]!='\0';z++)
+	{
+		cmd5[z]='\0';
+	}
+	strcpy(cmd5,"AT+CMGS=\"");
 }
 
-/* Select memory of Phonebook */
+/* Select memory of Phone book */
 void ids_select_mem()
 {
 	for(int z=0;cmdSM[z]!='\0';z++)

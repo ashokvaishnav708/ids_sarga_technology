@@ -53,10 +53,10 @@
  }*/
  
  /* Pull down Pin B3 */
- int ids_mrs_3()
+ /*int ids_mrs_3()
  {
 	 return (PINC & (1<<PINC2));
- }
+ }*/
  
  /* Pull down Pin B4 */
  int ids_mrs_4()
@@ -74,11 +74,12 @@
  
  extern int ids_mrs_read()
  {
-	int  mrs1, mrs2, mrs3, mrs4, mrs5;
+	int  mrs4, mrs5;
+	//int mrs1, mrs2, mrs3;
 
 //	mrs1 = ids_mrs_1();
 	//mrs2 = ids_mrs_2();
-	mrs3 = ids_mrs_3();
+	//mrs3 = ids_mrs_3();
 	mrs4 = ids_mrs_4();
 	mrs5 = ids_mrs_5();	 
 	

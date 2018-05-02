@@ -8,6 +8,8 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
                               main.o (__do_clear_bss)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcat.o)
                               src/st_usart.o (strcat)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcpy.o)
+                              src/st_usart.o (strcpy)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strstr.o)
                               main.o (strstr)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8a.a(eerd_byte.o)
@@ -37,8 +39,6 @@ Discarded input sections
  .text          0x00000000        0x0 src/st_mrs.o
  .data          0x00000000        0x0 src/st_mrs.o
  .bss           0x00000000        0x0 src/st_mrs.o
- .text.ids_mrs_3
-                0x00000000        0x8 src/st_mrs.o
  .text.ids_mrs_4
                 0x00000000        0x8 src/st_mrs.o
  .text.ids_mrs_5
@@ -58,6 +58,8 @@ Discarded input sections
  .text          0x00000000        0x0 src/st_usart.o
  .data          0x00000000        0x0 src/st_usart.o
  .bss           0x00000000        0x0 src/st_usart.o
+ .bss.terminate
+                0x00000000        0x2 src/st_usart.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
@@ -109,6 +111,9 @@ Discarded input sections
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcat.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcat.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcat.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcpy.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcpy.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcpy.o)
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strstr.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strstr.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strstr.o)
@@ -250,7 +255,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x6b2
+.text           0x00000000      0x74a
  *(.vectors)
  .vectors       0x00000000       0x26 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4/crtatmega8a.o
                 0x00000000                __vector_default
@@ -333,90 +338,96 @@ END GROUP
  .text.ids_get_owner
                 0x0000008c       0xa2 main.o
                 0x0000008c                ids_get_owner
+ .text.ids_alert_system
+                0x0000012e       0xc4 main.o
+                0x0000012e                ids_alert_system
  .text.__vector_11
-                0x0000012e       0x58 main.o
-                0x0000012e                __vector_11
+                0x000001f2       0x58 main.o
+                0x000001f2                __vector_11
  .text.__vector_1
-                0x00000186       0x6e main.o
-                0x00000186                __vector_1
+                0x0000024a       0x76 main.o
+                0x0000024a                __vector_1
  .text.__vector_2
-                0x000001f4       0x6c main.o
-                0x000001f4                __vector_2
+                0x000002c0       0x74 main.o
+                0x000002c0                __vector_2
  .text.startup.main
-                0x00000260      0x154 main.o
-                0x00000260                main
+                0x00000334      0x140 main.o
+                0x00000334                main
  .text.ids_siren
-                0x000003b4       0x12 src/st_alarmsys.o
-                0x000003b4                ids_siren
+                0x00000474       0x12 src/st_alarmsys.o
+                0x00000474                ids_siren
  .text.ids_delayms
-                0x000003c6       0x24 src/st_delay.o
-                0x000003c6                ids_delayms
+                0x00000486       0x24 src/st_delay.o
+                0x00000486                ids_delayms
  .text.ids_mrs_read
-                0x000003ea       0x1c src/st_mrs.o
-                0x000003ea                ids_mrs_read
+                0x000004aa       0x1a src/st_mrs.o
+                0x000004aa                ids_mrs_read
  .text.ids_raisealarm
-                0x00000406        0x6 src/st_msg.o
-                0x00000406                ids_raisealarm
+                0x000004c4        0x6 src/st_msg.o
+                0x000004c4                ids_raisealarm
  .text.ids_pir_1
-                0x0000040c       0x12 src/st_pir.o
-                0x0000040c                ids_pir_1
+                0x000004ca       0x12 src/st_pir.o
+                0x000004ca                ids_pir_1
  .text.ids_port_init
-                0x0000041e       0x18 src/st_port.o
-                0x0000041e                ids_port_init
+                0x000004dc       0x18 src/st_port.o
+                0x000004dc                ids_port_init
  .text.ids_extint_init
-                0x00000436        0xe src/st_port.o
-                0x00000436                ids_extint_init
+                0x000004f4        0xe src/st_port.o
+                0x000004f4                ids_extint_init
  .text.ids_read_button
-                0x00000444        0xe src/st_port.o
-                0x00000444                ids_read_button
+                0x00000502        0xe src/st_port.o
+                0x00000502                ids_read_button
  .text.ids_system
-                0x00000452       0x18 src/st_system.o
-                0x00000452                ids_system
+                0x00000510       0x18 src/st_system.o
+                0x00000510                ids_system
  .text.ids_beep
-                0x0000046a        0xc src/st_system.o
-                0x0000046a                ids_beep
+                0x00000528        0xc src/st_system.o
+                0x00000528                ids_beep
  .text.ids_usart_init
-                0x00000476       0x14 src/st_usart.o
-                0x00000476                ids_usart_init
+                0x00000534       0x14 src/st_usart.o
+                0x00000534                ids_usart_init
  .text.ids_transmit_call1
-                0x0000048a       0x28 src/st_usart.o
-                0x0000048a                ids_transmit_call1
+                0x00000548       0x28 src/st_usart.o
+                0x00000548                ids_transmit_call1
  .text.ids_transmit_call2
-                0x000004b2       0x28 src/st_usart.o
-                0x000004b2                ids_transmit_call2
+                0x00000570       0x28 src/st_usart.o
+                0x00000570                ids_transmit_call2
  .text.ids_transmit_discon
-                0x000004da       0x22 src/st_usart.o
-                0x000004da                ids_transmit_discon
+                0x00000598       0x22 src/st_usart.o
+                0x00000598                ids_transmit_discon
+ .text.ids_sms_txtmd
+                0x000005ba       0x28 src/st_usart.o
+                0x000005ba                ids_sms_txtmd
  .text.ids_send_sms
-                0x000004fc       0x98 src/st_usart.o
-                0x000004fc                ids_send_sms
- .text.ids_on_detect_stuff
-                0x00000594       0x56 src/st_usart.o
-                0x00000594                ids_on_detect_stuff
+                0x000005e2       0x92 src/st_usart.o
+                0x000005e2                ids_send_sms
  .text.ids_select_mem
-                0x000005ea       0x28 src/st_usart.o
-                0x000005ea                ids_select_mem
+                0x00000674       0x28 src/st_usart.o
+                0x00000674                ids_select_mem
  .text.ids_req_owner
-                0x00000612       0x28 src/st_usart.o
-                0x00000612                ids_req_owner
+                0x0000069c       0x28 src/st_usart.o
+                0x0000069c                ids_req_owner
  .text.avr-libc
-                0x0000063a       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcat.o)
-                0x0000063a                strcat
+                0x000006c4       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcat.o)
+                0x000006c4                strcat
  .text.avr-libc
-                0x00000650       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strstr.o)
-                0x00000650                strstr
+                0x000006da        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strcpy.o)
+                0x000006da                strcpy
  .text.avr-libc
-                0x00000684       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8a.a(eerd_byte.o)
-                0x00000684                eeprom_read_byte
+                0x000006e8       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(strstr.o)
+                0x000006e8                strstr
  .text.avr-libc
-                0x00000694       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8a.a(eewr_byte.o)
-                0x00000694                eeprom_write_byte
-                0x00000696                eeprom_write_r18
-                0x000006ae                . = ALIGN (0x2)
+                0x0000071c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8a.a(eerd_byte.o)
+                0x0000071c                eeprom_read_byte
+ .text.avr-libc
+                0x0000072c       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8a.a(eewr_byte.o)
+                0x0000072c                eeprom_write_byte
+                0x0000072e                eeprom_write_r18
+                0x00000746                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000006ae        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
-                0x000006ae                _exit
-                0x000006ae                exit
+ .fini9         0x00000746        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+                0x00000746                _exit
+                0x00000746                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -435,82 +446,81 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000006ae        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .fini0         0x00000746        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
  *(.fini0)
-                0x000006b2                _etext = .
+                0x0000074a                _etext = .
 
-.data           0x00800060      0x1a6 load address 0x000006b2
+.data           0x00800060      0x1b2 load address 0x0000074a
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.off_sms  0x00800060       0x24 main.o
-                0x00800060                off_sms
- .data.on_sms   0x00800084       0x23 main.o
-                0x00800084                on_sms
- .data.cmd5     0x008000a7        0xa src/st_usart.o
-                0x008000a7                cmd5
- .data.cmd4     0x008000b1        0xa src/st_usart.o
-                0x008000b1                cmd4
- .data.cmd3     0x008000bb       0x12 src/st_usart.o
-                0x008000bb                cmd3
- .data.cmdSM    0x008000cd        0xd src/st_usart.o
-                0x008000cd                cmdSM
- .data.cmd2     0x008000da        0x5 src/st_usart.o
-                0x008000da                cmd2
- .data.cmd1     0x008000df        0xe src/st_usart.o
-                0x008000df                cmd1
- .data.cmd0     0x008000ed        0xf src/st_usart.o
-                0x008000ed                cmd0
- .data.sms3     0x008000fc       0x58 src/st_usart.o
-                0x008000fc                sms3
- .data.sms2     0x00800154       0x51 src/st_usart.o
-                0x00800154                sms2
- .data.sms1     0x008001a5       0x50 src/st_usart.o
-                0x008001a5                sms1
+ .data.sms3     0x00800060       0x5b main.o
+                0x00800060                sms3
+ .data.sms2     0x008000bb       0x51 main.o
+                0x008000bb                sms2
+ .data.sms1     0x0080010c       0x50 main.o
+                0x0080010c                sms1
+ .data.off_sms  0x0080015c       0x24 main.o
+                0x0080015c                off_sms
+ .data.on_sms   0x00800180       0x23 main.o
+                0x00800180                on_sms
+ .data.cmd5     0x008001a3        0xa src/st_usart.o
+                0x008001a3                cmd5
+ .data.cmd4     0x008001ad        0xa src/st_usart.o
+                0x008001ad                cmd4
+ .data.cmd3     0x008001b7       0x12 src/st_usart.o
+                0x008001b7                cmd3
+ .data.cmdSM    0x008001c9        0xd src/st_usart.o
+                0x008001c9                cmdSM
+ .data.cmd2     0x008001d6        0x5 src/st_usart.o
+                0x008001d6                cmd2
+ .data.cmd1     0x008001db        0xe src/st_usart.o
+                0x008001db                cmd1
+ .data.cmd0     0x008001e9        0xf src/st_usart.o
+                0x008001e9                cmd0
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x008001f5        0xd main.o
+                0x008001f8        0xd main.o
  .rodata.str1.1
-                0x00800202        0x3 src/st_usart.o
+                0x00800205        0xd src/st_usart.o
  *(.gnu.linkonce.d*)
-                0x00800206                . = ALIGN (0x2)
- *fill*         0x00800205        0x1 
-                0x00800206                _edata = .
-                0x00800206                PROVIDE (__data_end, .)
+                0x00800212                . = ALIGN (0x2)
+                0x00800212                _edata = .
+                0x00800212                PROVIDE (__data_end, .)
 
-.bss            0x00800206       0xb8
-                0x00800206                PROVIDE (__bss_start, .)
+.bss            0x00800212       0xb8
+                0x00800212                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.active_flag
-                0x00800206        0x2 main.o
-                0x00800206                active_flag
- .bss.status    0x00800208        0x2 main.o
-                0x00800208                status
- .bss.x         0x0080020a        0x2 main.o
-                0x0080020a                x
- .bss.j         0x0080020c        0x2 main.o
-                0x0080020c                j
- .bss.s         0x0080020e        0x2 main.o
-                0x0080020e                s
- .bss.i         0x00800210        0x2 main.o
-                0x00800210                i
- .bss.st        0x00800212        0x2 main.o
-                0x00800212                st
+                0x00800212        0x2 main.o
+                0x00800212                active_flag
+ .bss.status    0x00800214        0x2 main.o
+                0x00800214                status
+ .bss.x         0x00800216        0x2 main.o
+                0x00800216                x
+ .bss.j         0x00800218        0x2 main.o
+                0x00800218                j
+ .bss.s         0x0080021a        0x2 main.o
+                0x0080021a                s
+ .bss.i         0x0080021c        0x2 main.o
+                0x0080021c                i
+ .bss.st        0x0080021e        0x2 main.o
+                0x0080021e                st
  *(COMMON)
- COMMON         0x00800214       0xaa main.o
-                0x00800214                info
-                0x008002aa                number
-                0x008002be                PROVIDE (__bss_end, .)
-                0x000006b2                __data_load_start = LOADADDR (.data)
-                0x00000858                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800220       0xaa main.o
+                0x00800220                info
+                0x008002b6                number
+                0x008002ca                PROVIDE (__bss_end, .)
+                0x0000074a                __data_load_start = LOADADDR (.data)
+                0x000008fc                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x008002be        0x0
+.noinit         0x008002ca        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x008002be                _end = .
+                0x008002ca                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
