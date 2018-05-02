@@ -244,47 +244,12 @@ int main ()
 			ids_delayms(5);
 			st=0;
 			/* Checking Sensors Indication */
-			if (((ids_pir_1() == 1)||(ids_mrs_read() == 0))) 
+			if (((ids_pir_1() == 0)||(ids_mrs_read() == 0))) 
 			{
 				_delay_ms(500);
-				if  (((ids_pir_1() == 1)||(ids_mrs_read() == 0))&&(active_flag==0))
+				if  (((ids_pir_1() == 0)||(ids_mrs_read() == 0))&&(active_flag==0))
 				{
 					ids_alert_system();
-					/*active_flag=1;
-					// Activate Communication & Alarm System 
-					ids_raisealarm();
-					// ASHOK START
-					ids_transmit_call1(); // Call to OWNER1
-					ids_delayms(350); // delay of 35 seconds
-					if ( active_flag == 1)
-					{ 
-						ids_transmit_discon();
-						ids_delayms(10);
-						ids_transmit_call2(); // Call to OWNER2
-						ids_delayms(350); // delay of 35 seconds
-						if ( active_flag == 1 )
-						{
-							ids_transmit_discon();
-							x=0;
-							ids_delayms(10);
-							ids_send_sms(number, sms1); // send first message
-							x=0;
-							ids_delayms(300); // delay of 30 seconds
-							if ( active_flag == 1 )
-							{
-								ids_send_sms(number, sms2); // send second message
-								x=0;
-								ids_delayms(300); // delay of 30 seconds
-								if ( active_flag == 1 )
-								{
-									ids_send_sms(number, sms3); // send third message
-									x=0;
-									ids_delayms(10);
-								} 
-							}
-						}
-					}
-					ids_clean_uart_buf();*/
 				}
 			}
 		}

@@ -135,7 +135,6 @@ void ids_sms_txtmd()
 
 void ids_send_sms(char *number, char *message)
 {	
-	
 	strcat(cmd5, number);
 	strcat(cmd5, "\"\r");
 	ids_delayms(1);
@@ -147,7 +146,7 @@ void ids_send_sms(char *number, char *message)
 	}
 	ids_delayms(20);
 	UDR = 10;
-	
+		
 	ids_delayms(1);
 	
 	for(int z=0;message[z]!='\0';z++)

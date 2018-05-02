@@ -447,7 +447,7 @@ Disassembly of section .text:
  38e:	10 92 1f 02 	sts	0x021F, r1	; 0x80021f <st+0x1>
  392:	10 92 1e 02 	sts	0x021E, r1	; 0x80021e <st>
  396:	99 d0       	rcall	.+306    	; 0x4ca <ids_pir_1>
- 398:	01 97       	sbiw	r24, 0x01	; 1
+ 398:	89 2b       	or	r24, r25
  39a:	69 f4       	brne	.+26     	; 0x3b6 <main+0x82>
  39c:	2f ef       	ldi	r18, 0xFF	; 255
  39e:	84 e3       	ldi	r24, 0x34	; 52
@@ -459,9 +459,9 @@ Disassembly of section .text:
  3aa:	00 c0       	rjmp	.+0      	; 0x3ac <main+0x78>
  3ac:	00 00       	nop
  3ae:	8d d0       	rcall	.+282    	; 0x4ca <ids_pir_1>
- 3b0:	01 97       	sbiw	r24, 0x01	; 1
- 3b2:	29 f4       	brne	.+10     	; 0x3be <main+0x8a>
- 3b4:	07 c0       	rjmp	.+14     	; 0x3c4 <main+0x90>
+ 3b0:	89 2b       	or	r24, r25
+ 3b2:	41 f0       	breq	.+16     	; 0x3c4 <main+0x90>
+ 3b4:	04 c0       	rjmp	.+8      	; 0x3be <main+0x8a>
  3b6:	79 d0       	rcall	.+242    	; 0x4aa <ids_mrs_read>
  3b8:	89 2b       	or	r24, r25
  3ba:	81 f3       	breq	.-32     	; 0x39c <main+0x68>
