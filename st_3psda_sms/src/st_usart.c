@@ -157,11 +157,6 @@ void ids_send_sms(char *number, char *message)
 	UDR = 26;
 	ids_delayms(20);
 	UDR = 10;
-	
-	for (int z=0;cmd5[z]!='\0';z++)
-	{
-		cmd5[z]='\0';
-	}
 	strcpy(cmd5,"AT+CMGS=\"");
 }
 

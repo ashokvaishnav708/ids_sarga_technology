@@ -3,23 +3,23 @@ st_ids.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000074a  00000000  00000000  00000094  2**1
+  0 .text         00000730  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         000001b2  00800060  0000074a  000007de  2**0
+  1 .data         000001b2  00800060  00000730  000007c4  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          000000b8  00800212  00800212  00000990  2**0
+  2 .bss          000000b8  00800212  00800212  00000976  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000990  2**0
+  3 .comment      00000030  00000000  00000000  00000976  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000009c0  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000009a8  2**2
                   CONTENTS, READONLY
-  5 .debug_info   0000048c  00000000  00000000  000009fc  2**0
+  5 .debug_info   0000048c  00000000  00000000  000009e4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000044e  00000000  00000000  00000e88  2**0
+  6 .debug_abbrev 0000044e  00000000  00000000  00000e70  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   0000001a  00000000  00000000  000012d6  2**0
+  7 .debug_line   0000001a  00000000  00000000  000012be  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    0000017a  00000000  00000000  000012f0  2**0
+  8 .debug_str    0000017a  00000000  00000000  000012d8  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -57,7 +57,7 @@ Disassembly of section .text:
   32:	12 e0       	ldi	r17, 0x02	; 2
   34:	a0 e6       	ldi	r26, 0x60	; 96
   36:	b0 e0       	ldi	r27, 0x00	; 0
-  38:	ea e4       	ldi	r30, 0x4A	; 74
+  38:	e0 e3       	ldi	r30, 0x30	; 48
   3a:	f7 e0       	ldi	r31, 0x07	; 7
   3c:	02 c0       	rjmp	.+4      	; 0x42 <__SREG__+0x3>
   3e:	05 90       	lpm	r0, Z+
@@ -80,7 +80,7 @@ Disassembly of section .text:
   54:	b2 07       	cpc	r27, r18
   56:	e1 f7       	brne	.-8      	; 0x50 <.do_clear_bss_loop>
   58:	6d d1       	rcall	.+730    	; 0x334 <main>
-  5a:	75 c3       	rjmp	.+1770   	; 0x746 <_exit>
+  5a:	68 c3       	rjmp	.+1744   	; 0x72c <_exit>
 
 0000005c <__bad_interrupt>:
   5c:	d1 cf       	rjmp	.-94     	; 0x0 <__vectors>
@@ -110,12 +110,12 @@ Disassembly of section .text:
   94:	10 92 19 02 	sts	0x0219, r1	; 0x800219 <j+0x1>
   98:	10 92 18 02 	sts	0x0218, r1	; 0x800218 <j>
   9c:	e0 df       	rcall	.-64     	; 0x5e <ids_clean_uart_buf>
-  9e:	ea d2       	rcall	.+1492   	; 0x674 <ids_select_mem>
+  9e:	dd d2       	rcall	.+1466   	; 0x65a <ids_select_mem>
   a0:	de df       	rcall	.-68     	; 0x5e <ids_clean_uart_buf>
   a2:	81 e0       	ldi	r24, 0x01	; 1
   a4:	90 e0       	ldi	r25, 0x00	; 0
   a6:	ef d1       	rcall	.+990    	; 0x486 <ids_delayms>
-  a8:	f9 d2       	rcall	.+1522   	; 0x69c <ids_req_owner>
+  a8:	ec d2       	rcall	.+1496   	; 0x682 <ids_req_owner>
   aa:	80 91 14 02 	lds	r24, 0x0214	; 0x800214 <status>
   ae:	90 91 15 02 	lds	r25, 0x0215	; 0x800215 <status+0x1>
   b2:	01 97       	sbiw	r24, 0x01	; 1
@@ -329,7 +329,7 @@ Disassembly of section .text:
  296:	63 e0       	ldi	r22, 0x03	; 3
  298:	80 e0       	ldi	r24, 0x00	; 0
  29a:	90 e0       	ldi	r25, 0x00	; 0
- 29c:	47 d2       	rcall	.+1166   	; 0x72c <eeprom_write_byte>
+ 29c:	3a d2       	rcall	.+1140   	; 0x712 <eeprom_write_byte>
  29e:	ff 91       	pop	r31
  2a0:	ef 91       	pop	r30
  2a2:	bf 91       	pop	r27
@@ -383,7 +383,7 @@ Disassembly of section .text:
  30a:	62 e0       	ldi	r22, 0x02	; 2
  30c:	80 e0       	ldi	r24, 0x00	; 0
  30e:	90 e0       	ldi	r25, 0x00	; 0
- 310:	0d d2       	rcall	.+1050   	; 0x72c <eeprom_write_byte>
+ 310:	00 d2       	rcall	.+1024   	; 0x712 <eeprom_write_byte>
  312:	ff 91       	pop	r31
  314:	ef 91       	pop	r30
  316:	bf 91       	pop	r27
@@ -426,7 +426,7 @@ Disassembly of section .text:
  35c:	63 e0       	ldi	r22, 0x03	; 3
  35e:	80 e0       	ldi	r24, 0x00	; 0
  360:	90 e0       	ldi	r25, 0x00	; 0
- 362:	e4 d1       	rcall	.+968    	; 0x72c <eeprom_write_byte>
+ 362:	d7 d1       	rcall	.+942    	; 0x712 <eeprom_write_byte>
  364:	ce d0       	rcall	.+412    	; 0x502 <ids_read_button>
  366:	89 2b       	or	r24, r25
  368:	11 f0       	breq	.+4      	; 0x36e <main+0x3a>
@@ -434,7 +434,7 @@ Disassembly of section .text:
  36c:	78 de       	rcall	.-784    	; 0x5e <ids_clean_uart_buf>
  36e:	80 e0       	ldi	r24, 0x00	; 0
  370:	90 e0       	ldi	r25, 0x00	; 0
- 372:	d4 d1       	rcall	.+936    	; 0x71c <eeprom_read_byte>
+ 372:	c7 d1       	rcall	.+910    	; 0x702 <eeprom_read_byte>
  374:	82 30       	cpi	r24, 0x02	; 2
  376:	71 f5       	brne	.+92     	; 0x3d4 <main+0xa0>
  378:	10 92 17 02 	sts	0x0217, r1	; 0x800217 <x+0x1>
@@ -495,7 +495,7 @@ Disassembly of section .text:
  406:	71 e0       	ldi	r23, 0x01	; 1
  408:	80 e2       	ldi	r24, 0x20	; 32
  40a:	92 e0       	ldi	r25, 0x02	; 2
- 40c:	6d d1       	rcall	.+730    	; 0x6e8 <strstr>
+ 40c:	60 d1       	rcall	.+704    	; 0x6ce <strstr>
  40e:	89 2b       	or	r24, r25
  410:	09 f4       	brne	.+2      	; 0x414 <__LOCK_REGION_LENGTH__+0x14>
  412:	a8 cf       	rjmp	.-176    	; 0x364 <main+0x30>
@@ -503,7 +503,7 @@ Disassembly of section .text:
  416:	71 e0       	ldi	r23, 0x01	; 1
  418:	80 e2       	ldi	r24, 0x20	; 32
  41a:	92 e0       	ldi	r25, 0x02	; 2
- 41c:	65 d1       	rcall	.+714    	; 0x6e8 <strstr>
+ 41c:	58 d1       	rcall	.+688    	; 0x6ce <strstr>
  41e:	89 2b       	or	r24, r25
  420:	79 f0       	breq	.+30     	; 0x440 <__LOCK_REGION_LENGTH__+0x40>
  422:	82 d0       	rcall	.+260    	; 0x528 <ids_beep>
@@ -513,7 +513,7 @@ Disassembly of section .text:
  42a:	62 e0       	ldi	r22, 0x02	; 2
  42c:	80 e0       	ldi	r24, 0x00	; 0
  42e:	90 e0       	ldi	r25, 0x00	; 0
- 430:	7d d1       	rcall	.+762    	; 0x72c <eeprom_write_byte>
+ 430:	70 d1       	rcall	.+736    	; 0x712 <eeprom_write_byte>
  432:	10 92 13 02 	sts	0x0213, r1	; 0x800213 <__data_end+0x1>
  436:	10 92 12 02 	sts	0x0212, r1	; 0x800212 <__data_end>
  43a:	60 e8       	ldi	r22, 0x80	; 128
@@ -523,7 +523,7 @@ Disassembly of section .text:
  442:	72 e0       	ldi	r23, 0x02	; 2
  444:	80 e2       	ldi	r24, 0x20	; 32
  446:	92 e0       	ldi	r25, 0x02	; 2
- 448:	4f d1       	rcall	.+670    	; 0x6e8 <strstr>
+ 448:	42 d1       	rcall	.+644    	; 0x6ce <strstr>
  44a:	89 2b       	or	r24, r25
  44c:	89 f0       	breq	.+34     	; 0x470 <__stack+0x11>
  44e:	6c d0       	rcall	.+216    	; 0x528 <ids_beep>
@@ -533,7 +533,7 @@ Disassembly of section .text:
  456:	63 e0       	ldi	r22, 0x03	; 3
  458:	80 e0       	ldi	r24, 0x00	; 0
  45a:	90 e0       	ldi	r25, 0x00	; 0
- 45c:	67 d1       	rcall	.+718    	; 0x72c <eeprom_write_byte>
+ 45c:	5a d1       	rcall	.+692    	; 0x712 <eeprom_write_byte>
  45e:	10 92 13 02 	sts	0x0213, r1	; 0x800213 <__data_end+0x1>
  462:	10 92 12 02 	sts	0x0212, r1	; 0x800212 <__data_end>
  466:	6c e5       	ldi	r22, 0x5C	; 92
@@ -758,203 +758,190 @@ Disassembly of section .text:
  5e0:	08 95       	ret
 
 000005e2 <ids_send_sms>:
- 5e2:	ef 92       	push	r14
- 5e4:	ff 92       	push	r15
- 5e6:	0f 93       	push	r16
- 5e8:	1f 93       	push	r17
- 5ea:	cf 93       	push	r28
- 5ec:	df 93       	push	r29
- 5ee:	7b 01       	movw	r14, r22
- 5f0:	bc 01       	movw	r22, r24
- 5f2:	83 ea       	ldi	r24, 0xA3	; 163
- 5f4:	91 e0       	ldi	r25, 0x01	; 1
- 5f6:	66 d0       	rcall	.+204    	; 0x6c4 <strcat>
- 5f8:	65 e0       	ldi	r22, 0x05	; 5
- 5fa:	72 e0       	ldi	r23, 0x02	; 2
- 5fc:	83 ea       	ldi	r24, 0xA3	; 163
- 5fe:	91 e0       	ldi	r25, 0x01	; 1
- 600:	61 d0       	rcall	.+194    	; 0x6c4 <strcat>
- 602:	81 e0       	ldi	r24, 0x01	; 1
- 604:	90 e0       	ldi	r25, 0x00	; 0
- 606:	3f df       	rcall	.-386    	; 0x486 <ids_delayms>
- 608:	03 ea       	ldi	r16, 0xA3	; 163
- 60a:	11 e0       	ldi	r17, 0x01	; 1
- 60c:	e8 01       	movw	r28, r16
- 60e:	89 91       	ld	r24, Y+
- 610:	88 23       	and	r24, r24
- 612:	29 f0       	breq	.+10     	; 0x61e <ids_send_sms+0x3c>
- 614:	8c b9       	out	0x0c, r24	; 12
- 616:	81 e0       	ldi	r24, 0x01	; 1
- 618:	90 e0       	ldi	r25, 0x00	; 0
- 61a:	35 df       	rcall	.-406    	; 0x486 <ids_delayms>
- 61c:	f8 cf       	rjmp	.-16     	; 0x60e <ids_send_sms+0x2c>
- 61e:	84 e1       	ldi	r24, 0x14	; 20
- 620:	90 e0       	ldi	r25, 0x00	; 0
- 622:	31 df       	rcall	.-414    	; 0x486 <ids_delayms>
- 624:	8a e0       	ldi	r24, 0x0A	; 10
- 626:	8c b9       	out	0x0c, r24	; 12
- 628:	81 e0       	ldi	r24, 0x01	; 1
- 62a:	90 e0       	ldi	r25, 0x00	; 0
- 62c:	2c df       	rcall	.-424    	; 0x486 <ids_delayms>
- 62e:	e7 01       	movw	r28, r14
- 630:	89 91       	ld	r24, Y+
- 632:	88 23       	and	r24, r24
- 634:	29 f0       	breq	.+10     	; 0x640 <ids_send_sms+0x5e>
- 636:	8c b9       	out	0x0c, r24	; 12
- 638:	81 e0       	ldi	r24, 0x01	; 1
- 63a:	90 e0       	ldi	r25, 0x00	; 0
- 63c:	24 df       	rcall	.-440    	; 0x486 <ids_delayms>
- 63e:	f8 cf       	rjmp	.-16     	; 0x630 <ids_send_sms+0x4e>
- 640:	8a e1       	ldi	r24, 0x1A	; 26
- 642:	8c b9       	out	0x0c, r24	; 12
- 644:	84 e1       	ldi	r24, 0x14	; 20
- 646:	90 e0       	ldi	r25, 0x00	; 0
- 648:	1e df       	rcall	.-452    	; 0x486 <ids_delayms>
- 64a:	8a e0       	ldi	r24, 0x0A	; 10
- 64c:	8c b9       	out	0x0c, r24	; 12
- 64e:	f8 01       	movw	r30, r16
- 650:	80 81       	ld	r24, Z
- 652:	88 23       	and	r24, r24
- 654:	21 f0       	breq	.+8      	; 0x65e <ids_send_sms+0x7c>
- 656:	f8 01       	movw	r30, r16
- 658:	11 92       	st	Z+, r1
- 65a:	8f 01       	movw	r16, r30
- 65c:	f8 cf       	rjmp	.-16     	; 0x64e <ids_send_sms+0x6c>
- 65e:	68 e0       	ldi	r22, 0x08	; 8
- 660:	72 e0       	ldi	r23, 0x02	; 2
- 662:	83 ea       	ldi	r24, 0xA3	; 163
- 664:	91 e0       	ldi	r25, 0x01	; 1
- 666:	df 91       	pop	r29
- 668:	cf 91       	pop	r28
- 66a:	1f 91       	pop	r17
- 66c:	0f 91       	pop	r16
- 66e:	ff 90       	pop	r15
- 670:	ef 90       	pop	r14
- 672:	33 c0       	rjmp	.+102    	; 0x6da <strcpy>
+ 5e2:	0f 93       	push	r16
+ 5e4:	1f 93       	push	r17
+ 5e6:	cf 93       	push	r28
+ 5e8:	df 93       	push	r29
+ 5ea:	8b 01       	movw	r16, r22
+ 5ec:	bc 01       	movw	r22, r24
+ 5ee:	83 ea       	ldi	r24, 0xA3	; 163
+ 5f0:	91 e0       	ldi	r25, 0x01	; 1
+ 5f2:	5b d0       	rcall	.+182    	; 0x6aa <strcat>
+ 5f4:	65 e0       	ldi	r22, 0x05	; 5
+ 5f6:	72 e0       	ldi	r23, 0x02	; 2
+ 5f8:	83 ea       	ldi	r24, 0xA3	; 163
+ 5fa:	91 e0       	ldi	r25, 0x01	; 1
+ 5fc:	56 d0       	rcall	.+172    	; 0x6aa <strcat>
+ 5fe:	81 e0       	ldi	r24, 0x01	; 1
+ 600:	90 e0       	ldi	r25, 0x00	; 0
+ 602:	41 df       	rcall	.-382    	; 0x486 <ids_delayms>
+ 604:	c3 ea       	ldi	r28, 0xA3	; 163
+ 606:	d1 e0       	ldi	r29, 0x01	; 1
+ 608:	89 91       	ld	r24, Y+
+ 60a:	88 23       	and	r24, r24
+ 60c:	29 f0       	breq	.+10     	; 0x618 <ids_send_sms+0x36>
+ 60e:	8c b9       	out	0x0c, r24	; 12
+ 610:	81 e0       	ldi	r24, 0x01	; 1
+ 612:	90 e0       	ldi	r25, 0x00	; 0
+ 614:	38 df       	rcall	.-400    	; 0x486 <ids_delayms>
+ 616:	f8 cf       	rjmp	.-16     	; 0x608 <ids_send_sms+0x26>
+ 618:	84 e1       	ldi	r24, 0x14	; 20
+ 61a:	90 e0       	ldi	r25, 0x00	; 0
+ 61c:	34 df       	rcall	.-408    	; 0x486 <ids_delayms>
+ 61e:	8a e0       	ldi	r24, 0x0A	; 10
+ 620:	8c b9       	out	0x0c, r24	; 12
+ 622:	81 e0       	ldi	r24, 0x01	; 1
+ 624:	90 e0       	ldi	r25, 0x00	; 0
+ 626:	2f df       	rcall	.-418    	; 0x486 <ids_delayms>
+ 628:	e8 01       	movw	r28, r16
+ 62a:	89 91       	ld	r24, Y+
+ 62c:	88 23       	and	r24, r24
+ 62e:	29 f0       	breq	.+10     	; 0x63a <ids_send_sms+0x58>
+ 630:	8c b9       	out	0x0c, r24	; 12
+ 632:	81 e0       	ldi	r24, 0x01	; 1
+ 634:	90 e0       	ldi	r25, 0x00	; 0
+ 636:	27 df       	rcall	.-434    	; 0x486 <ids_delayms>
+ 638:	f8 cf       	rjmp	.-16     	; 0x62a <ids_send_sms+0x48>
+ 63a:	8a e1       	ldi	r24, 0x1A	; 26
+ 63c:	8c b9       	out	0x0c, r24	; 12
+ 63e:	84 e1       	ldi	r24, 0x14	; 20
+ 640:	90 e0       	ldi	r25, 0x00	; 0
+ 642:	21 df       	rcall	.-446    	; 0x486 <ids_delayms>
+ 644:	8a e0       	ldi	r24, 0x0A	; 10
+ 646:	8c b9       	out	0x0c, r24	; 12
+ 648:	68 e0       	ldi	r22, 0x08	; 8
+ 64a:	72 e0       	ldi	r23, 0x02	; 2
+ 64c:	83 ea       	ldi	r24, 0xA3	; 163
+ 64e:	91 e0       	ldi	r25, 0x01	; 1
+ 650:	df 91       	pop	r29
+ 652:	cf 91       	pop	r28
+ 654:	1f 91       	pop	r17
+ 656:	0f 91       	pop	r16
+ 658:	33 c0       	rjmp	.+102    	; 0x6c0 <strcpy>
 
-00000674 <ids_select_mem>:
- 674:	cf 93       	push	r28
- 676:	df 93       	push	r29
- 678:	c9 ec       	ldi	r28, 0xC9	; 201
- 67a:	d1 e0       	ldi	r29, 0x01	; 1
- 67c:	89 91       	ld	r24, Y+
- 67e:	88 23       	and	r24, r24
- 680:	29 f0       	breq	.+10     	; 0x68c <ids_select_mem+0x18>
- 682:	8c b9       	out	0x0c, r24	; 12
- 684:	81 e0       	ldi	r24, 0x01	; 1
- 686:	90 e0       	ldi	r25, 0x00	; 0
- 688:	fe de       	rcall	.-516    	; 0x486 <ids_delayms>
- 68a:	f8 cf       	rjmp	.-16     	; 0x67c <ids_select_mem+0x8>
- 68c:	84 e1       	ldi	r24, 0x14	; 20
- 68e:	90 e0       	ldi	r25, 0x00	; 0
- 690:	fa de       	rcall	.-524    	; 0x486 <ids_delayms>
- 692:	8a e0       	ldi	r24, 0x0A	; 10
- 694:	8c b9       	out	0x0c, r24	; 12
- 696:	df 91       	pop	r29
- 698:	cf 91       	pop	r28
- 69a:	08 95       	ret
+0000065a <ids_select_mem>:
+ 65a:	cf 93       	push	r28
+ 65c:	df 93       	push	r29
+ 65e:	c9 ec       	ldi	r28, 0xC9	; 201
+ 660:	d1 e0       	ldi	r29, 0x01	; 1
+ 662:	89 91       	ld	r24, Y+
+ 664:	88 23       	and	r24, r24
+ 666:	29 f0       	breq	.+10     	; 0x672 <ids_select_mem+0x18>
+ 668:	8c b9       	out	0x0c, r24	; 12
+ 66a:	81 e0       	ldi	r24, 0x01	; 1
+ 66c:	90 e0       	ldi	r25, 0x00	; 0
+ 66e:	0b df       	rcall	.-490    	; 0x486 <ids_delayms>
+ 670:	f8 cf       	rjmp	.-16     	; 0x662 <ids_select_mem+0x8>
+ 672:	84 e1       	ldi	r24, 0x14	; 20
+ 674:	90 e0       	ldi	r25, 0x00	; 0
+ 676:	07 df       	rcall	.-498    	; 0x486 <ids_delayms>
+ 678:	8a e0       	ldi	r24, 0x0A	; 10
+ 67a:	8c b9       	out	0x0c, r24	; 12
+ 67c:	df 91       	pop	r29
+ 67e:	cf 91       	pop	r28
+ 680:	08 95       	ret
 
-0000069c <ids_req_owner>:
- 69c:	cf 93       	push	r28
- 69e:	df 93       	push	r29
- 6a0:	c7 eb       	ldi	r28, 0xB7	; 183
- 6a2:	d1 e0       	ldi	r29, 0x01	; 1
- 6a4:	89 91       	ld	r24, Y+
- 6a6:	88 23       	and	r24, r24
- 6a8:	29 f0       	breq	.+10     	; 0x6b4 <ids_req_owner+0x18>
- 6aa:	8c b9       	out	0x0c, r24	; 12
- 6ac:	81 e0       	ldi	r24, 0x01	; 1
- 6ae:	90 e0       	ldi	r25, 0x00	; 0
- 6b0:	ea de       	rcall	.-556    	; 0x486 <ids_delayms>
- 6b2:	f8 cf       	rjmp	.-16     	; 0x6a4 <ids_req_owner+0x8>
- 6b4:	84 e1       	ldi	r24, 0x14	; 20
- 6b6:	90 e0       	ldi	r25, 0x00	; 0
- 6b8:	e6 de       	rcall	.-564    	; 0x486 <ids_delayms>
- 6ba:	8a e0       	ldi	r24, 0x0A	; 10
- 6bc:	8c b9       	out	0x0c, r24	; 12
- 6be:	df 91       	pop	r29
- 6c0:	cf 91       	pop	r28
- 6c2:	08 95       	ret
+00000682 <ids_req_owner>:
+ 682:	cf 93       	push	r28
+ 684:	df 93       	push	r29
+ 686:	c7 eb       	ldi	r28, 0xB7	; 183
+ 688:	d1 e0       	ldi	r29, 0x01	; 1
+ 68a:	89 91       	ld	r24, Y+
+ 68c:	88 23       	and	r24, r24
+ 68e:	29 f0       	breq	.+10     	; 0x69a <ids_req_owner+0x18>
+ 690:	8c b9       	out	0x0c, r24	; 12
+ 692:	81 e0       	ldi	r24, 0x01	; 1
+ 694:	90 e0       	ldi	r25, 0x00	; 0
+ 696:	f7 de       	rcall	.-530    	; 0x486 <ids_delayms>
+ 698:	f8 cf       	rjmp	.-16     	; 0x68a <ids_req_owner+0x8>
+ 69a:	84 e1       	ldi	r24, 0x14	; 20
+ 69c:	90 e0       	ldi	r25, 0x00	; 0
+ 69e:	f3 de       	rcall	.-538    	; 0x486 <ids_delayms>
+ 6a0:	8a e0       	ldi	r24, 0x0A	; 10
+ 6a2:	8c b9       	out	0x0c, r24	; 12
+ 6a4:	df 91       	pop	r29
+ 6a6:	cf 91       	pop	r28
+ 6a8:	08 95       	ret
 
-000006c4 <strcat>:
- 6c4:	fb 01       	movw	r30, r22
- 6c6:	dc 01       	movw	r26, r24
- 6c8:	0d 90       	ld	r0, X+
- 6ca:	00 20       	and	r0, r0
- 6cc:	e9 f7       	brne	.-6      	; 0x6c8 <strcat+0x4>
- 6ce:	11 97       	sbiw	r26, 0x01	; 1
- 6d0:	01 90       	ld	r0, Z+
- 6d2:	0d 92       	st	X+, r0
- 6d4:	00 20       	and	r0, r0
- 6d6:	e1 f7       	brne	.-8      	; 0x6d0 <strcat+0xc>
- 6d8:	08 95       	ret
+000006aa <strcat>:
+ 6aa:	fb 01       	movw	r30, r22
+ 6ac:	dc 01       	movw	r26, r24
+ 6ae:	0d 90       	ld	r0, X+
+ 6b0:	00 20       	and	r0, r0
+ 6b2:	e9 f7       	brne	.-6      	; 0x6ae <strcat+0x4>
+ 6b4:	11 97       	sbiw	r26, 0x01	; 1
+ 6b6:	01 90       	ld	r0, Z+
+ 6b8:	0d 92       	st	X+, r0
+ 6ba:	00 20       	and	r0, r0
+ 6bc:	e1 f7       	brne	.-8      	; 0x6b6 <strcat+0xc>
+ 6be:	08 95       	ret
 
-000006da <strcpy>:
- 6da:	fb 01       	movw	r30, r22
- 6dc:	dc 01       	movw	r26, r24
- 6de:	01 90       	ld	r0, Z+
- 6e0:	0d 92       	st	X+, r0
- 6e2:	00 20       	and	r0, r0
- 6e4:	e1 f7       	brne	.-8      	; 0x6de <strcpy+0x4>
- 6e6:	08 95       	ret
+000006c0 <strcpy>:
+ 6c0:	fb 01       	movw	r30, r22
+ 6c2:	dc 01       	movw	r26, r24
+ 6c4:	01 90       	ld	r0, Z+
+ 6c6:	0d 92       	st	X+, r0
+ 6c8:	00 20       	and	r0, r0
+ 6ca:	e1 f7       	brne	.-8      	; 0x6c4 <strcpy+0x4>
+ 6cc:	08 95       	ret
 
-000006e8 <strstr>:
- 6e8:	fb 01       	movw	r30, r22
- 6ea:	51 91       	ld	r21, Z+
- 6ec:	55 23       	and	r21, r21
- 6ee:	a9 f0       	breq	.+42     	; 0x71a <strstr+0x32>
- 6f0:	bf 01       	movw	r22, r30
- 6f2:	dc 01       	movw	r26, r24
- 6f4:	4d 91       	ld	r20, X+
- 6f6:	45 17       	cp	r20, r21
- 6f8:	41 11       	cpse	r20, r1
- 6fa:	e1 f7       	brne	.-8      	; 0x6f4 <strstr+0xc>
- 6fc:	59 f4       	brne	.+22     	; 0x714 <strstr+0x2c>
- 6fe:	cd 01       	movw	r24, r26
- 700:	01 90       	ld	r0, Z+
- 702:	00 20       	and	r0, r0
- 704:	49 f0       	breq	.+18     	; 0x718 <strstr+0x30>
- 706:	4d 91       	ld	r20, X+
- 708:	40 15       	cp	r20, r0
- 70a:	41 11       	cpse	r20, r1
- 70c:	c9 f3       	breq	.-14     	; 0x700 <strstr+0x18>
- 70e:	fb 01       	movw	r30, r22
- 710:	41 11       	cpse	r20, r1
- 712:	ef cf       	rjmp	.-34     	; 0x6f2 <strstr+0xa>
- 714:	81 e0       	ldi	r24, 0x01	; 1
- 716:	90 e0       	ldi	r25, 0x00	; 0
- 718:	01 97       	sbiw	r24, 0x01	; 1
- 71a:	08 95       	ret
+000006ce <strstr>:
+ 6ce:	fb 01       	movw	r30, r22
+ 6d0:	51 91       	ld	r21, Z+
+ 6d2:	55 23       	and	r21, r21
+ 6d4:	a9 f0       	breq	.+42     	; 0x700 <strstr+0x32>
+ 6d6:	bf 01       	movw	r22, r30
+ 6d8:	dc 01       	movw	r26, r24
+ 6da:	4d 91       	ld	r20, X+
+ 6dc:	45 17       	cp	r20, r21
+ 6de:	41 11       	cpse	r20, r1
+ 6e0:	e1 f7       	brne	.-8      	; 0x6da <strstr+0xc>
+ 6e2:	59 f4       	brne	.+22     	; 0x6fa <strstr+0x2c>
+ 6e4:	cd 01       	movw	r24, r26
+ 6e6:	01 90       	ld	r0, Z+
+ 6e8:	00 20       	and	r0, r0
+ 6ea:	49 f0       	breq	.+18     	; 0x6fe <strstr+0x30>
+ 6ec:	4d 91       	ld	r20, X+
+ 6ee:	40 15       	cp	r20, r0
+ 6f0:	41 11       	cpse	r20, r1
+ 6f2:	c9 f3       	breq	.-14     	; 0x6e6 <strstr+0x18>
+ 6f4:	fb 01       	movw	r30, r22
+ 6f6:	41 11       	cpse	r20, r1
+ 6f8:	ef cf       	rjmp	.-34     	; 0x6d8 <strstr+0xa>
+ 6fa:	81 e0       	ldi	r24, 0x01	; 1
+ 6fc:	90 e0       	ldi	r25, 0x00	; 0
+ 6fe:	01 97       	sbiw	r24, 0x01	; 1
+ 700:	08 95       	ret
 
-0000071c <eeprom_read_byte>:
- 71c:	e1 99       	sbic	0x1c, 1	; 28
- 71e:	fe cf       	rjmp	.-4      	; 0x71c <eeprom_read_byte>
- 720:	9f bb       	out	0x1f, r25	; 31
- 722:	8e bb       	out	0x1e, r24	; 30
- 724:	e0 9a       	sbi	0x1c, 0	; 28
- 726:	99 27       	eor	r25, r25
- 728:	8d b3       	in	r24, 0x1d	; 29
+00000702 <eeprom_read_byte>:
+ 702:	e1 99       	sbic	0x1c, 1	; 28
+ 704:	fe cf       	rjmp	.-4      	; 0x702 <eeprom_read_byte>
+ 706:	9f bb       	out	0x1f, r25	; 31
+ 708:	8e bb       	out	0x1e, r24	; 30
+ 70a:	e0 9a       	sbi	0x1c, 0	; 28
+ 70c:	99 27       	eor	r25, r25
+ 70e:	8d b3       	in	r24, 0x1d	; 29
+ 710:	08 95       	ret
+
+00000712 <eeprom_write_byte>:
+ 712:	26 2f       	mov	r18, r22
+
+00000714 <eeprom_write_r18>:
+ 714:	e1 99       	sbic	0x1c, 1	; 28
+ 716:	fe cf       	rjmp	.-4      	; 0x714 <eeprom_write_r18>
+ 718:	9f bb       	out	0x1f, r25	; 31
+ 71a:	8e bb       	out	0x1e, r24	; 30
+ 71c:	2d bb       	out	0x1d, r18	; 29
+ 71e:	0f b6       	in	r0, 0x3f	; 63
+ 720:	f8 94       	cli
+ 722:	e2 9a       	sbi	0x1c, 2	; 28
+ 724:	e1 9a       	sbi	0x1c, 1	; 28
+ 726:	0f be       	out	0x3f, r0	; 63
+ 728:	01 96       	adiw	r24, 0x01	; 1
  72a:	08 95       	ret
 
-0000072c <eeprom_write_byte>:
- 72c:	26 2f       	mov	r18, r22
+0000072c <_exit>:
+ 72c:	f8 94       	cli
 
-0000072e <eeprom_write_r18>:
- 72e:	e1 99       	sbic	0x1c, 1	; 28
- 730:	fe cf       	rjmp	.-4      	; 0x72e <eeprom_write_r18>
- 732:	9f bb       	out	0x1f, r25	; 31
- 734:	8e bb       	out	0x1e, r24	; 30
- 736:	2d bb       	out	0x1d, r18	; 29
- 738:	0f b6       	in	r0, 0x3f	; 63
- 73a:	f8 94       	cli
- 73c:	e2 9a       	sbi	0x1c, 2	; 28
- 73e:	e1 9a       	sbi	0x1c, 1	; 28
- 740:	0f be       	out	0x3f, r0	; 63
- 742:	01 96       	adiw	r24, 0x01	; 1
- 744:	08 95       	ret
-
-00000746 <_exit>:
- 746:	f8 94       	cli
-
-00000748 <__stop_program>:
- 748:	ff cf       	rjmp	.-2      	; 0x748 <__stop_program>
+0000072e <__stop_program>:
+ 72e:	ff cf       	rjmp	.-2      	; 0x72e <__stop_program>

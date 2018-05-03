@@ -223,7 +223,7 @@ int main ()
 		owner = ids_get_owner(); // returns 1 if GOT owner number else 0
 		ids_system(OFF);
 	} while (owner != 1);
-	
+	owner=0;
 	ids_clean_uart_buf();
 	eeprom_write_byte(000000,3);
 	/* Infinite Loop*/
