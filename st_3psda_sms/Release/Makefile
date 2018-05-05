@@ -43,7 +43,6 @@ C_SRCS +=  \
 ../src/st_alarmsys.c \
 ../src/st_delay.c \
 ../src/st_mrs.c \
-../src/st_msg.c \
 ../src/st_pir.c \
 ../src/st_port.c \
 ../src/st_system.c \
@@ -61,7 +60,6 @@ main.o \
 src/st_alarmsys.o \
 src/st_delay.o \
 src/st_mrs.o \
-src/st_msg.o \
 src/st_pir.o \
 src/st_port.o \
 src/st_system.o \
@@ -72,7 +70,6 @@ main.o \
 src/st_alarmsys.o \
 src/st_delay.o \
 src/st_mrs.o \
-src/st_msg.o \
 src/st_pir.o \
 src/st_port.o \
 src/st_system.o \
@@ -83,7 +80,6 @@ main.d \
 src/st_alarmsys.d \
 src/st_delay.d \
 src/st_mrs.d \
-src/st_msg.d \
 src/st_pir.d \
 src/st_port.d \
 src/st_system.d \
@@ -94,7 +90,6 @@ main.d \
 src/st_alarmsys.d \
 src/st_delay.d \
 src/st_mrs.d \
-src/st_msg.d \
 src/st_pir.d \
 src/st_port.d \
 src/st_system.d \
@@ -114,8 +109,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-
-
 
 
 

@@ -45,7 +45,6 @@
 #include <avr/eeprom.h>
 #include <stdbool.h>
 
-#include <st_msg.h>
 #include <st_port.h>
 #include <st_pir.h>
 #include <st_mrs.h>
@@ -66,26 +65,269 @@ char sms3[] = {"Kindly switch off the alarm once you reach and check box and con
 int s=0,j=0; // variables required while fetching owner number
 int x=0,status=0; // used for USART interrupt status
 char info[150],number[20]; // 'info' for USART buffer and 'number' for storing owner number
-volatile int active_flag = 0; 
+volatile int active_flag = 0;
 
-// ASHOK START
+/* Functions Declaration */
+
+/*
+
+@Name	ids_alert_system
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function starts when an Intruder is detected. 
+				It starts loud buzzer and call and SMS to OWNERS.
+@Owner	ASHOK VAISHNAV
+
+*/
 void ids_alert_system(void);
-int ids_get_owner(void); // To get owner contact from SIM
-void ids_clean_uart_buf(void); // Reset USART variables
 
-int ids_get_owner()
+/*
+
+@Name	ids_retrv_owner_num
+@Input_Parameter	None
+@Output_Parameter	return 0 or 1
+@Description	This function retrieves the owner contact number from SIM card. 
+@Owner	ASHOK VAISHNAV
+
+*/
+int ids_retrv_owner_num(void); // To get owner contact from SIM
+
+/*
+
+@Name	ids_cln_ubuf
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function cleans the USART buffer and its index values. 
+@Owner	ASHOK VAISHNAV
+
+*/
+void ids_cln_ubuf(void); // Reset USART variables
+
+/*
+
+@Name	ids_system_disarm
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function is to arm the system.
+				On execution of the function the system will check sensors status.
+@Owner	ASHOK VAISHNAV
+
+*/
+void ids_system_arm(void);
+
+/*
+
+@Name	ids_system_disarm
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function is to disarm the system. 
+				On execution of the function the system will not check sensors status.
+@Owner	ASHOK VAISHNAV
+
+*/
+void ids_system_disarm(void);
+
+/*
+
+@Name	ids_init
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function executes when system has started. 
+				It initializes the overall system and make it ready to be used.
+@Owner	ASHOK VAISHNAV
+
+*/
+void ids_init(void);
+
+/*
+
+@Name	ids_read_sensors
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function checks the sensors and panic button status. 
+				If sensor or sensor detects the intruder then system goes to alert mode.
+@Owner	ASHOK VAISHNAV
+
+*/
+void ids_read_sensors(void);
+
+/*
+
+@Name	ids_check_sms
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function checks the arrival of message. 
+				Validate the arrived message whether the system has to ON or OFF.
+				Change the system state accordingly.
+@Owner	ASHOK VAISHNAV
+
+*/
+void ids_check_sms(void);
+
+
+/* ISR for USART */
+ISR(USART_RXC_vect)
+{
+	char temp;
+	temp=UDR;
+	if (temp!='\r'&&temp!='\n') // Removing Newline and Start character from USART buffer
+	{
+		info[x]=temp;
+		x++;
+	}
+	status=1;
+}
+
+/* ISR for OFF Signal from Remote*/
+ISR(INT0_vect)
+{
+	ids_system_disarm();
+}
+
+/* ISR for ON Signal from Remote*/
+ISR(INT1_vect)
+{
+	ids_system_arm();
+}
+
+
+void ids_cln_ubf()
+{
+	/* Clean USART buffer */
+	for (i=0;info[i]!='\0';i++)
+	{
+		info[i]='\0';
+	}
+	/* Reset USART variables */
+	x=0;
+	status=0;
+}
+
+void ids_init()
+{
+	int owner;
+	/* Port Initialization */
+	ids_port_init();
+	/* External Interrupt Initialization */
+	ids_extint_init();
+	/* USART Initialization */
+	ids_usart_init();
+	ids_delayms(30); // Delay until USART initializes completely
+	/* Getting OWNER Number from SIM*/
+	do
+	{
+		//ids_delayms(5);
+		ids_set_sys_led(ON);
+		owner = ids_retrv_owner_num(); // returns 1 if GOT owner number else 0
+		ids_set_sys_led(OFF);
+	} while (owner != 1);
+	owner=0;
+	ids_cln_ubf();
+	eeprom_write_byte(000000,3);
+}
+
+void ids_read_sensors()
+{
+	if (ids_panic_btn_status()) //ids_panic_btn_status()
+	{
+		ids_alert_system();
+		ids_cln_ubf();
+	}
+	if (eeprom_read_byte(000000)==2)
+	{
+		/* System is ON now */
+		x=0;
+		status=0;
+		active_flag=0;
+		ids_delayms(5);
+		st=0;
+		/* Checking Sensors Indication */
+		if (((ids_read_pir() == 0)||(ids_mrs_read() == 0)))
+		{
+			_delay_ms(500);
+			if  (((ids_read_pir() == 0)||(ids_mrs_read() == 0))&&(active_flag==0))
+			{
+				ids_alert_system();
+			}
+		}
+	}
+	else if(eeprom_read_byte(000000)==3)
+	{
+		/* System is OFF now */
+		x=0;
+		status=0;
+		ids_delayms(5);
+		st=0;
+	}
+}
+
+void ids_check_sms()
+{
+	if (status==1)
+	{
+		if (strstr(info,"OWNER")!=NULL)
+		{
+			if (strstr(info,"ON")!=NULL)
+			{
+				/* SMS arrived for ON */
+				ids_beep();
+				ids_set_sys_led(ON);
+				eeprom_write_byte(000000,2);
+				active_flag=0;
+				ids_send_sms(number, on_sms);
+			}
+			else if (strstr(info,"OFF")!=NULL)
+			{
+				/* SMS arrived for OFF */
+				ids_beep();
+				ids_set_sys_led(OFF);
+				eeprom_write_byte(000000,3);
+				active_flag=0;
+				ids_send_sms(number ,off_sms);
+			}
+			ids_cln_ubf();
+		}
+	}
+}
+
+void ids_system_arm()
+{
+	if (st==0)
+	{
+		st=1;
+		ids_beep();
+	}
+	ids_set_sys_led(ON);
+	eeprom_write_byte(000000,2);
+}
+
+void ids_system_disarm()
+{
+	if (st==0)
+	{
+		st=1;
+		ids_beep(); // beep buzzer once
+	}
+	ids_set_sys_led(OFF); //ids_set_sys_state()
+	ids_siren_disable();
+	ids_disconn_call();
+	active_flag=0;
+	eeprom_write_byte(000000,3);
+}
+
+int ids_retrv_owner_num() //ids_retrv_owner_num()
 {
 	int ret=0;
 	s=0;
 	j=0;
-	ids_clean_uart_buf();
-	ids_select_mem();
-	ids_clean_uart_buf();
+	ids_cln_ubf(); //ids_cln_ubuf
+	ids_mem_type();     //ids_mem_type()
+	ids_cln_ubf();
 	ids_delayms(1);
-	ids_req_owner();
-	if(status==1)
+	ids_extract_cnum(); //ids_extract_cnum
+	if(status==1) //if possible put this code in a separate function
 	{
-		/* Owner Contact Number extraction Algorithm */
+		/* Owner Contact Number extraction Code */
 		for (int z=0;info[z]!='\0';z++)
 		{
 			if (info[z]=='"') s++;
@@ -108,26 +350,26 @@ int ids_get_owner()
 	return ret;
 }
 
-void ids_alert_system()
+void ids_alert_system() //ids_start
 {
 	active_flag=1;
 	/* Activate Communication & Alarm System */
-	ids_raisealarm();
+	ids_siren_enable(); //ids_siren_enable
 	// ASHOK START
-	ids_transmit_call1(); // Call to OWNER1
+	ids_call_owner(1); // Call to OWNER1 //Make this function dynamic, ids_call_owner()
 	ids_delayms(350); // delay of 35 seconds
 	if ( active_flag == 1)
 	{
-		ids_transmit_discon();
+		ids_disconn_call();  //ids_disconn_call
 		ids_delayms(10);
-		ids_transmit_call2(); // Call to OWNER2
+		ids_call_owner(2); // Call to OWNER2 ids_call_owner
 		ids_delayms(350); // delay of 35 seconds
-		if ( active_flag == 1 )
+		if ( active_flag == 1 )//write comments why are we using this flag
 		{
-			ids_transmit_discon();
+			ids_disconn_call();
 			x=0;
 			ids_delayms(10);
-			ids_sms_txtmd();
+			ids_sel_sms_mode(); //ids_mode_sms or ids_sel_sms_mode
 			x=0;
 			ids_delayms(1);
 			ids_send_sms(number, sms1); // send first message
@@ -147,148 +389,20 @@ void ids_alert_system()
 			}
 		}
 	}
-	ids_clean_uart_buf();
+	ids_cln_ubf();
 }
 
-void ids_clean_uart_buf()
-{
-	/* Clean USART buffer */
-	for (i=0;info[i]!='\0';i++)
-	{
-		info[i]='\0';
-	}
-	/* Reset USART variables */
-	x=0;
-	status=0;
-}
 
-/* ISR for USART */
-ISR(USART_RXC_vect)
-{
-	char temp;
-	temp=UDR;
-	if (temp!='\r'&&temp!='\n') // Removing Newline and Start character from USART buffer
-	{
-		info[x]=temp;
-		x++;
-	}
-	status=1;
-}
 
-// ASHOK END
-
-/* ISR for OFF Signal from Remote*/
-ISR(INT0_vect)
-{
-	if (st==0)
-	{
-		st=1;
-		ids_beep(); // beep buzzer once
-	}
-	ids_system(OFF);
-	ids_transmit_discon();
-	active_flag=0;
-	eeprom_write_byte(000000,3); 
-}
-
-/* ISR for ON Signal from Remote*/
-ISR(INT1_vect)
-{
-	if (st==0)
-	{
-		st=1;
-		ids_beep();
-	}
-	ids_system(ON);
-	active_flag=0;
-	eeprom_write_byte(000000,2);
-}
 
 
 int main ()
 {
-	int owner;
-	/* Port Initialization */
-	ids_port_init();
-	/* External Interrupt Initialization */
-	ids_extint_init();
-	/* USART Initialization */
-	ids_usart_init();
-	ids_delayms(30); // Delay until USART initializes completely
-	/* Getting OWNER Number from SIM*/
-	do 
+	ids_init(); // System Initialize
+	while (1) //Infinite Loop
 	{
-		ids_delayms(5);
-		ids_system(ON);
-		owner = ids_get_owner(); // returns 1 if GOT owner number else 0
-		ids_system(OFF);
-	} while (owner != 1);
-	owner=0;
-	ids_clean_uart_buf();
-	eeprom_write_byte(000000,3);
-	/* Infinite Loop*/
-	while (1)
-	{
-		if (ids_read_button())
-		{
-			ids_alert_system();
-			//ids_on_detect_stuff(number);
-			//active_flag=1;
-			ids_clean_uart_buf();
-		}
-		if (eeprom_read_byte(000000)==2)
-		{
-			/* System is ON now */
-			x=0;
-			status=0;
-			ids_delayms(5);
-			st=0;
-			/* Checking Sensors Indication */
-			if (((ids_pir_1() == 0)||(ids_mrs_read() == 0))) 
-			{
-				_delay_ms(500);
-				if  (((ids_pir_1() == 0)||(ids_mrs_read() == 0))&&(active_flag==0))
-				{
-					ids_alert_system();
-				}
-			}
-		}
-		else if(eeprom_read_byte(000000)==3)
-		{
-			/* System is OFF now */
-			x=0;
-			status=0;
-			ids_delayms(5);
-			st=0;
-		}
-		
-		/* check sms arrival for arming and disarming */
-		//ASHOK START
-		if (status==1)
-		{
-			if (strstr(info,"OWNER")!=NULL)
-			{
-				if (strstr(info,"ON")!=NULL)
-				{
-					/* SMS arrived for ON */
-					ids_beep();
-					ids_system(ON);
-					eeprom_write_byte(000000,2);
-					active_flag=0;
-					ids_send_sms(number, on_sms);
-				}
-				else if (strstr(info,"OFF")!=NULL)
-				{
-					/* SMS arrived for OFF */
-					ids_beep();
-					ids_system(OFF);
-					eeprom_write_byte(000000,3);
-					active_flag=0;
-					ids_send_sms(number ,off_sms);
-				}
-				ids_clean_uart_buf();
-			}
-		}
+		ids_read_sensors(); // Checks sensors status
+		ids_check_sms(); // Checks the SMS for system ON or OFF
 	}
 	return 0;
 }

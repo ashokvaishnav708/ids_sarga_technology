@@ -42,7 +42,7 @@
 
 /* Pull down Pin B0 */ 
 
-int ids_pir_1()
+int ids_read_pir()
 {
 	return ((PINC & (1<<PINC5))==0);
 } 

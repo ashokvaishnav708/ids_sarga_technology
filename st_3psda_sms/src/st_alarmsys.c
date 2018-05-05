@@ -41,16 +41,13 @@
 
 /* Alarm System Initialization */
 
-void ids_siren(int stat)
+
+void ids_siren_enable()
 {
-	if(stat == ON)
-	{
-		PORTB |= (1<<PINB1);
-		//PORTC |= (1<<PINC1);	
-	}
-	else if(stat ==OFF)
-	{
-		PORTB &=~ (1<<PINB1);
-		//PORTC &=~ (1<<PINC1);
-	}
+	PORTB |= (1<<PINB1);
+}
+
+void ids_siren_disable()
+{
+	PORTB &=~ (1<<PINB1);
 }

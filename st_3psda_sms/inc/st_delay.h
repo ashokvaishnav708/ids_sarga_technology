@@ -38,6 +38,17 @@
 #ifndef ST_delay_H_
 #define ST_delay_H_
 
+
+/*
+
+@Name	ids_delayms
+@Input_Parameter	time unit
+@Output_Parameter	None
+@Description	This function is used to perform delay in the system. 
+				It multiplies the given time unit with 100 and performs delay in milliseconds.
+@Owner	NAWAZ KHAN
+
+*/
 void ids_delayms(unsigned int t);
 
 #endif   /* ST_delay_H_ */

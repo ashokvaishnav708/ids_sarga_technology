@@ -43,7 +43,6 @@
 #include <st_delay.h>
 #include <util/delay.h>
 #include <string.h>
-#include <st_msg.h>
 
 #define ON 1
 #define OFF 0
@@ -57,13 +56,13 @@
 int terminate=0;
 					
 //ASHOK START
-unsigned char cmd0[] = {"ATD>\"OWNER2\";\r"};
-unsigned char cmd1[] = {"ATD>\"OWNER\";\r"};
-unsigned char cmd2[] = {"ATH\r"};
-unsigned char cmdSM[] = {"AT+CPBS=\"SM\""};
-unsigned char cmd3[] = {"AT+CPBF=\"OWNER\";\r"};
-unsigned char cmd4[] = {"AT+CMGF=1"};
-char cmd5[] = {"AT+CMGS=\""};
+unsigned char cmd0[20] = {"ATD>\"OWNER2\";\r"};
+unsigned char cmd1[20] = {"ATD>\"OWNER\";\r"};
+unsigned char cmd2[10] = {"ATH\r"};
+unsigned char cmdSM[15] = {"AT+CPBS=\"SM\""};
+unsigned char cmd3[25] = {"AT+CPBF=\"OWNER\";\r"};
+unsigned char cmd4[10] = {"AT+CMGF=1"};
+char cmd5[30] = {"AT+CMGS=\""};
 
 //ASHOK END
 									
@@ -77,30 +76,27 @@ void ids_usart_init()
 } 
 
 
-/* Send Command 1 */
-void ids_transmit_call1()
-{
-	for(int z=0;cmd1[z]!='\0';z++)
-	{
-		/* Put cmd5 into buffer, sends the cmd4 */
-		UDR = cmd1[z];
-		ids_delayms(1);
-	}
-	//UDR = 13;
-	ids_delayms(40);
-	UDR = 10;
-}
 
-//ASHOK START
-void ids_transmit_call2()
+void ids_call_owner(int ownr)
 {
-	for(int z=0;cmd0[z]!='\0';z++)
+	if (ownr==1)
 	{
-		/* Put cmd5 into buffer, sends the cmd4 */
-		UDR = cmd0[z];
-		ids_delayms(1);
+		for(int z=0;cmd1[z]!='\0';z++)
+		{
+			/* Call OWNER1 */
+			UDR = cmd1[z];
+			ids_delayms(1);
+		}
 	}
-	//UDR = 13;
+	else if(ownr==2)
+	{	
+		for(int z=0;cmd0[z]!='\0';z++)
+		{
+			/* OWNER2 call */
+			UDR = cmd0[z];
+			ids_delayms(1);
+		}
+	}
 	ids_delayms(40);
 	UDR = 10;
 	
@@ -108,7 +104,7 @@ void ids_transmit_call2()
 //ASHOK END
 
 /* Send Command 2 */
-void ids_transmit_discon()
+void ids_disconn_call()
 {
 	for(int z=0;cmd2[z]!='\0';z++)
 	{	
@@ -119,7 +115,7 @@ void ids_transmit_discon()
 	UDR = 10;
 }
 
-void ids_sms_txtmd()
+void ids_sel_sms_mode()
 {
 	for(int z=0;cmd4[z]!='\0';z++)
 	{
@@ -161,7 +157,7 @@ void ids_send_sms(char *number, char *message)
 }
 
 /* Select memory of Phone book */
-void ids_select_mem()
+void ids_mem_type()
 {
 	for(int z=0;cmdSM[z]!='\0';z++)
 	{
@@ -173,7 +169,7 @@ void ids_select_mem()
 }
 
 //Request for OWNER contact
-void ids_req_owner()
+void ids_extract_cnum()
 {
 	for(int z=0;cmd3[z]!='\0';z++)
 	{
@@ -183,7 +179,6 @@ void ids_req_owner()
 	ids_delayms(20);
 	UDR = 10;
 }
-
 
 
 //ASHOK END

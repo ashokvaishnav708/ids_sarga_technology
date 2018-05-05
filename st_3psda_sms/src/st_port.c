@@ -45,7 +45,7 @@
 #include <st_port.h>
 
 /* Port Initialization */
-void ids_port_init(void)
+void ids_port_init()
 {
 	/* Initialization Sensor's Pins  */
 	/* Sensor's Pin declared as Output */
@@ -57,7 +57,7 @@ void ids_port_init(void)
 	PORTD |= (/*(1 << PIND2)|(1 <<PIND3)|*/(1<<PIND7)|(1<<PIND4));    // turn On the Pull-up
 }
 
-void ids_extint_init(void)
+void ids_extint_init()
 {
 	// PD0 is now an input with pull-up enabled
 	GICR |= ((1 << INT0)|(1 << INT1));      // Turns on INT0
@@ -65,7 +65,7 @@ void ids_extint_init(void)
 	sei();                    // turn on interrupts
 }
 
-int ids_read_button()
+int ids_panic_btn_status()
 {
 	
 	return ((PINC & (1<<PINC1))==0);

@@ -10,8 +10,6 @@ src\st_delay.c
 
 src\st_mrs.c
 
-src\st_msg.c
-
 src\st_pir.c
 
 src\st_port.c

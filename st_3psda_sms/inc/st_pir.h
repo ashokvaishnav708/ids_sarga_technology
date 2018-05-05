@@ -38,6 +38,18 @@
 #ifndef  ST_PIR_H_
 #define ST_PIR_H_
 
-int ids_pir_1();
+
+/*
+
+@Name	ids_read_pir
+@Input_Parameter	None	
+@Output_Parameter	flag
+@Description	This function checks the PIR sensor status.
+				It returns true or false i.e. 0 or 1.
+				Returns 0 if someone detected else 1.
+@Owner	NAWAZ KHAN
+
+*/
+int ids_read_pir(void);
 
 #endif /* ST_PIR_H_ */

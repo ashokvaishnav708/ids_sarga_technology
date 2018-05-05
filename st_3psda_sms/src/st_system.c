@@ -3,9 +3,10 @@
 #include <st_alarmsys.h>
 #include <st_usart.h>
 #include <st_delay.h>
-#include <st_msg.h>
 /* Activate Whole System */
-void ids_system(int stat)
+
+
+void ids_set_sys_led(int stat)
 {
 	if (stat == ON)
 	{
@@ -15,8 +16,6 @@ void ids_system(int stat)
 	else if(stat == OFF)
 	{
 		PORTD &=~ (1<<PORTD6);
-		ids_siren(OFF);
-		//ids_transmit_discon();
 	}
 }
 

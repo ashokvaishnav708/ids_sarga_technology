@@ -135,9 +135,6 @@
     <Compile Include="inc\st_mrs.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="inc\st_msg.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="inc\st_pir.h">
       <SubType>compile</SubType>
     </Compile>
@@ -160,9 +157,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\st_mrs.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\st_msg.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\st_pir.c">
