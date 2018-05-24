@@ -1,5 +1,4 @@
-/*
-*************************************************************************************
+/**************************************************************************************
 *
 *									SARGA TECHNOLOGY
 *
@@ -12,12 +11,8 @@
 *
 *
 *
-**************************************************************************************
-*/
-
-
-/*!
- *************************************************************************************
+***************************************************************************************/
+/**************************************************************************************
 
  @File          ST_AlarmSys.h
  
@@ -31,37 +26,15 @@
 
  @Cautions      None
 
- *************************************************************************************
- */
-
+ **************************************************************************************/
 
 #ifndef  ST_AlarmSys_H_
 #define  ST_AlarmSys_H_
 
-#define ON 1
-#define OFF 0
+/*********Function Prototype***********/
 
-
-/*
-
-@Name	ids_siren_enable
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function simply starts the LOUD Buzzer alarm. 
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_siren_enable(void);
 
-/*
-
-@Name	ids_siren_disable
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function simply stops the LOUD Buzzer alarm. 
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_siren_disable(void);
 
 

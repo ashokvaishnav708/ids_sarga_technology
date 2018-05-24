@@ -1,5 +1,4 @@
-/*
-*************************************************************************************
+/**************************************************************************************
 *
 *									SARGA TECHNOLOGY
 *
@@ -12,11 +11,9 @@
 *
 *
 *
-**************************************************************************************
-*/
+***************************************************************************************/
 
-/*!
- *************************************************************************************
+/**************************************************************************************
 
  @File          main.c 
  
@@ -31,11 +28,9 @@
 
  @Cautions      None
 
- **************************************************************************************
- */
+ **************************************************************************************/
 
-/*						Header File Inclusions
-***************************************************************************************/
+/*****************Header File Inclusions***********************************************/
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -52,120 +47,48 @@
 #include <st_system.h>
 #include <st_delay.h>
 
-int st=0; // for debugging double beep problem
-int i=0; // index variable for UART buffer
-char on_sms[] = {"Your security system is turned On."}; // message to acknowledge the ON status
-char off_sms[] = {"Your security system is turned Off."}; // message to acknowledge the OFF status
+/*Global Variable Declaration*/
+
+int st=0;                                                  // for debugging double beep problem
+int i=0;                                                   // index variable for UART buffer
+char on_sms[] = {"Your security system is turned On."};    // message to acknowledge the ON status
+char off_sms[] = {"Your security system is turned Off."};  // message to acknowledge the OFF status
+int s=0,j=0;                                               // variables required while fetching owner number
+int x=0,status=0;                                          // used for USART interrupt status
+char info[150];											   // 'info' for USART buffer
+static char number[20];                                    // 'number' for storing owner number
+volatile int active_flag = 0;
+
 
 /* Messages to be sent to owner when intruder detected*/
 char sms1[] = {"Beware Sir/Madam! Be alert someone entering your showroom with criminal intent."}; // First message
 char sms2[] = {"Hope Sir/Madam you took measures and arrived at your showroom to check intruder."}; // Second message
 char sms3[] = {"Kindly switch off the alarm once you reach and check box and connections before restoring."}; // Third message
 
-int s=0,j=0; // variables required while fetching owner number
-int x=0,status=0; // used for USART interrupt status
-char info[150],number[20]; // 'info' for USART buffer and 'number' for storing owner number
-volatile int active_flag = 0;
 
-/* Functions Declaration */
 
-/*
-
-@Name	ids_alert_system
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function starts when an Intruder is detected. 
-				It starts loud buzzer and call and SMS to OWNERS.
-@Owner	ASHOK VAISHNAV
-
-*/
+/* Functions Prototype Declaration */
 void ids_alert_system(void);
-
-/*
-
-@Name	ids_retrv_owner_num
-@Input_Parameter	None
-@Output_Parameter	return 0 or 1
-@Description	This function retrieves the owner contact number from SIM card. 
-@Owner	ASHOK VAISHNAV
-
-*/
-int ids_retrv_owner_num(void); // To get owner contact from SIM
-
-/*
-
-@Name	ids_cln_ubuf
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function cleans the USART buffer and its index values. 
-@Owner	ASHOK VAISHNAV
-
-*/
-void ids_cln_ubuf(void); // Reset USART variables
-
-/*
-
-@Name	ids_system_disarm
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function is to arm the system.
-				On execution of the function the system will check sensors status.
-@Owner	ASHOK VAISHNAV
-
-*/
+int ids_retrv_owner_num(void);  // To get owner contact from SIM
+void ids_cln_ubf(void);        // Reset USART variables
 void ids_system_arm(void);
-
-/*
-
-@Name	ids_system_disarm
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function is to disarm the system. 
-				On execution of the function the system will not check sensors status.
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_system_disarm(void);
-
-/*
-
-@Name	ids_init
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function executes when system has started. 
-				It initializes the overall system and make it ready to be used.
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_init(void);
-
-/*
-
-@Name	ids_read_sensors
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function checks the sensors and panic button status. 
-				If sensor or sensor detects the intruder then system goes to alert mode.
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_read_sensors(void);
-
-/*
-
-@Name	ids_check_sms
-@Input_Parameter	None
-@Output_Parameter	None
-@Description	This function checks the arrival of message. 
-				Validate the arrived message whether the system has to ON or OFF.
-				Change the system state accordingly.
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_check_sms(void);
 
 
-/* ISR for USART */
+
+/**************************************************************************
+
+@Name	            ISR
+@Input_Parameter	USART_RXC_vect
+@Output_Parameter	None
+@Description	    This function is the interrupt service routine to cater 
+                    interrupt from USART, it will deliver data from GSM.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 ISR(USART_RXC_vect)
 {
 	char temp;
@@ -178,53 +101,195 @@ ISR(USART_RXC_vect)
 	status=1;
 }
 
-/* ISR for OFF Signal from Remote*/
+/**************************************************************************
+
+@Name	            ISR
+@Input_Parameter	INT0_vect
+@Output_Parameter	None
+@Description	    This function is the interrupt service routine to cater 
+                    interrupt from remote, it will disarm the system.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 ISR(INT0_vect)
 {
 	ids_system_disarm();
 }
 
-/* ISR for ON Signal from Remote*/
+
+/**************************************************************************
+
+@Name	            ISR
+@Input_Parameter	INT1_vect
+@Output_Parameter	None
+@Description	    This function is the interrupt service routine to cater 
+                    interrupt from remote, it will arm the system.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 ISR(INT1_vect)
 {
 	ids_system_arm();
 }
 
 
-void ids_cln_ubf()
+/*****************************************************************
+
+@Name	ids_system_arm
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function is to arm the system.
+On execution of the function the system will check sensors status.
+@Owner	ASHOK VAISHNAV
+
+*****************************************************************/
+void ids_system_arm()
 {
-	/* Clean USART buffer */
-	for (i=0;info[i]!='\0';i++)
+	if (st==0)
 	{
-		info[i]='\0';
+		st=1;
+		ids_beep();
 	}
-	/* Reset USART variables */
-	x=0;
-	status=0;
+	ids_set_sys_led(ON);
+	eeprom_write_byte(000000,2);
 }
 
-void ids_init()
+/***************************************************************************************
+
+@Name	ids_system_disarm
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function is to disarm the system. 
+				On execution of the function the system will not check sensors status.
+@Owner	ASHOK VAISHNAV
+
+****************************************************************************************/
+void ids_system_disarm()
 {
-	int owner;
-	/* Port Initialization */
-	ids_port_init();
-	/* External Interrupt Initialization */
-	ids_extint_init();
-	/* USART Initialization */
-	ids_usart_init();
-	ids_delayms(30); // Delay until USART initializes completely
-	/* Getting OWNER Number from SIM*/
-	do
+	if (st==0)
 	{
-		//ids_delayms(5);
-		ids_set_sys_led(ON);
-		owner = ids_retrv_owner_num(); // returns 1 if GOT owner number else 0
-		ids_set_sys_led(OFF);
-	} while (owner != 1);
-	owner=0;
-	ids_cln_ubf();
+		st=1;
+		ids_beep(); // beep buzzer once
+	}
+	ids_set_sys_led(OFF); //ids_set_sys_state()
+	ids_siren_disable();
+	ids_disconn_call();
+	active_flag=0;
 	eeprom_write_byte(000000,3);
 }
+
+
+/*********************************************************************************
+
+@Name	ids_check_sms
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function checks the arrival of message. 
+				Validate the arrived message whether the system has to ON or OFF.
+				Change the system state accordingly.
+@Owner	ASHOK VAISHNAV
+
+*********************************************************************************/
+void ids_check_sms()
+{
+	if (status==1)
+	{
+		if (strstr(info,"OWNER")!=NULL)
+		{
+			if (strstr(info,"ON")!=NULL)
+			{
+				/* SMS arrived for ON */
+				ids_beep();
+				ids_set_sys_led(ON);
+				eeprom_write_byte(000000,2);
+				active_flag=0;
+				ids_send_sms(number, on_sms);
+			}
+			else if (strstr(info,"OFF")!=NULL)
+			{
+				/* SMS arrived for OFF */
+				ids_beep();
+				ids_set_sys_led(OFF);
+				eeprom_write_byte(000000,3);
+				active_flag=0;
+				ids_send_sms(number ,off_sms);
+			}
+			ids_cln_ubf();
+		}
+	}
+}
+
+
+/**********************************************************************
+
+@Name	ids_alert_system
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function starts when an Intruder is detected.
+It starts loud buzzer and call and SMS to OWNERS.
+@Owner	ASHOK VAISHNAV
+
+************************************************************************/
+void ids_alert_system() //ids_start
+{
+	active_flag=1;
+	/* Activate Communication & Alarm System */
+	ids_siren_enable();
+	ids_delayms(10);
+	/* Calling Owner 1 */
+	ids_call_owner(1); 
+	ids_delayms(350); 
+	if ( active_flag == 1)
+	{
+		/* Calling Owner 2 */
+		ids_disconn_call();  
+		ids_delayms(10);
+		ids_call_owner(2); 
+		ids_delayms(350); 
+		if ( active_flag == 1 )
+		{
+			/* Sending First Message to Owner */
+			ids_disconn_call();
+			ids_cln_ubf();
+			ids_delayms(1);
+			ids_attention();
+			ids_delayms(10);
+			ids_send_sms(number, sms1); 
+			ids_cln_ubf();
+			ids_delayms(300); 
+			if ( active_flag == 1 )
+			{
+				/* Sending Second Message to Owner */
+				ids_attention();
+				ids_delayms(10);
+				ids_send_sms(number, sms2);
+				ids_cln_ubf();
+				ids_delayms(300); 
+				if ( active_flag == 1 )
+				{
+					/* Sending Third Message to Owner */
+					ids_attention();
+					ids_delayms(10);
+					ids_send_sms(number, sms3);
+					ids_cln_ubf();
+					ids_delayms(10);
+				}
+			}
+		}
+	}
+	ids_cln_ubf();
+}
+
+/****************************************************************************************
+
+@Name	ids_read_sensors
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function checks the sensors and panic button status. 
+				If sensor or sensor detects the intruder then system goes to alert mode.
+@Owner	ASHOK VAISHNAV
+
+****************************************************************************************/
 
 void ids_read_sensors()
 {
@@ -261,66 +326,56 @@ void ids_read_sensors()
 	}
 }
 
-void ids_check_sms()
-{
-	if (status==1)
-	{
-		if (strstr(info,"OWNER")!=NULL)
-		{
-			if (strstr(info,"ON")!=NULL)
-			{
-				/* SMS arrived for ON */
-				ids_beep();
-				ids_set_sys_led(ON);
-				eeprom_write_byte(000000,2);
-				active_flag=0;
-				ids_send_sms(number, on_sms);
-			}
-			else if (strstr(info,"OFF")!=NULL)
-			{
-				/* SMS arrived for OFF */
-				ids_beep();
-				ids_set_sys_led(OFF);
-				eeprom_write_byte(000000,3);
-				active_flag=0;
-				ids_send_sms(number ,off_sms);
-			}
-			ids_cln_ubf();
-		}
-	}
-}
+/********************************************************************************
 
-void ids_system_arm()
-{
-	if (st==0)
-	{
-		st=1;
-		ids_beep();
-	}
-	ids_set_sys_led(ON);
-	eeprom_write_byte(000000,2);
-}
+@Name	ids_init
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function executes when system has started. 
+				It initializes the overall system and make it ready to be used.
+@Owner	ASHOK VAISHNAV
 
-void ids_system_disarm()
+*********************************************************************************/
+
+void ids_init()
 {
-	if (st==0)
+	int owner;
+	/* Port Initialization */
+	ids_port_init();
+	/* External Interrupt Initialization */
+	ids_extint_init();
+	/* USART Initialization */
+	ids_usart_init();
+	ids_delayms(30); // Delay until USART initializes completely
+	/* Getting OWNER Number from SIM*/
+	do
 	{
-		st=1;
-		ids_beep(); // beep buzzer once
-	}
-	ids_set_sys_led(OFF); //ids_set_sys_state()
-	ids_siren_disable();
-	ids_disconn_call();
-	active_flag=0;
+		//ids_delayms(5);
+		ids_set_sys_led(ON);
+		owner = ids_retrv_owner_num(); // returns 1 if GOT owner number else 0
+		ids_set_sys_led(OFF);
+	} while (owner != 1);
+	owner=0;
+	ids_cln_ubf();
 	eeprom_write_byte(000000,3);
 }
 
-int ids_retrv_owner_num() //ids_retrv_owner_num()
+
+/******************************************************************************
+
+@Name	ids_retrv_owner_num
+@Input_Parameter	None
+@Output_Parameter	return 0 or 1
+@Description	This function retrieves the owner contact number from SIM card.
+@Owner	ASHOK VAISHNAV
+
+******************************************************************************/
+int ids_retrv_owner_num()
 {
 	int ret=0;
 	s=0;
 	j=0;
-	ids_cln_ubf(); //ids_cln_ubuf
+	ids_cln_ubf();       //ids_cln_ubuf
 	ids_mem_type();     //ids_mem_type()
 	ids_cln_ubf();
 	ids_delayms(1);
@@ -350,51 +405,38 @@ int ids_retrv_owner_num() //ids_retrv_owner_num()
 	return ret;
 }
 
-void ids_alert_system() //ids_start
+/**************************************************************************
+
+@Name	ids_cln_ubuf
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	This function cleans the USART buffer and its index values.
+@Owner	ASHOK VAISHNAV
+
+**************************************************************************/
+
+void ids_cln_ubf()
 {
-	active_flag=1;
-	/* Activate Communication & Alarm System */
-	ids_siren_enable(); //ids_siren_enable
-	// ASHOK START
-	ids_call_owner(1); // Call to OWNER1 //Make this function dynamic, ids_call_owner()
-	ids_delayms(350); // delay of 35 seconds
-	if ( active_flag == 1)
+	/* Clean USART buffer */
+	for (i=0;info[i]!='\0';i++)
 	{
-		ids_disconn_call();  //ids_disconn_call
-		ids_delayms(10);
-		ids_call_owner(2); // Call to OWNER2 ids_call_owner
-		ids_delayms(350); // delay of 35 seconds
-		if ( active_flag == 1 )//write comments why are we using this flag
-		{
-			ids_disconn_call();
-			x=0;
-			ids_delayms(10);
-			ids_sel_sms_mode(); //ids_mode_sms or ids_sel_sms_mode
-			x=0;
-			ids_delayms(1);
-			ids_send_sms(number, sms1); // send first message
-			x=0;
-			ids_delayms(300); // delay of 30 seconds
-			if ( active_flag == 1 )
-			{
-				ids_send_sms(number, sms2); // send second message
-				x=0;
-				ids_delayms(300); // delay of 30 seconds
-				if ( active_flag == 1 )
-				{
-					ids_send_sms(number, sms3); // send third message
-					x=0;
-					ids_delayms(10);
-				}
-			}
-		}
+		info[i]='\0';
 	}
-	ids_cln_ubf();
+	/* Reset USART variables */
+	x=0;
+	status=0;
 }
 
 
+/**********************************************************************
 
+@Name	            main()
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	    This is the entry point of the system
+@Owner	ASHOK VAISHNAV
 
+************************************************************************/
 
 int main ()
 {
@@ -403,6 +445,7 @@ int main ()
 	{
 		ids_read_sensors(); // Checks sensors status
 		ids_check_sms(); // Checks the SMS for system ON or OFF
+		ids_cln_ubf();
 	}
 	return 0;
 }

@@ -1,5 +1,4 @@
-/*
-*************************************************************************************
+/**************************************************************************************
 *
 *									SARGA TECHNOLOGY
 *
@@ -12,12 +11,10 @@
 *
 *
 *
-**************************************************************************************
-*/
+***************************************************************************************/
 
 
-/*!
- **************************************************************************************
+/***************************************************************************************
 
  @File			ST_Port.c 
  
@@ -32,11 +29,9 @@
 
  @Cautions      None
 
- ****************************************************************************************
- */
+ *****************************************************************************************/
 
-/*								Header File Inclusions
-*****************************************************************************************/
+/*************Header File Inclusions *****************************************************/
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -44,7 +39,15 @@
 #include <util/delay.h>
 #include <st_port.h>
 
-/* Port Initialization */
+/**************************************************************************
+
+@Name	            ids_port_init()
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	    This function is used to initialize the ports
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 void ids_port_init()
 {
 	/* Initialization Sensor's Pins  */
@@ -56,7 +59,16 @@ void ids_port_init()
 	PORTC |= ((1<<PINC1)|(1<<PINC2)|(1<<PINC3)|(1<<PINC4)|(1<<PINC5));
 	PORTD |= (/*(1 << PIND2)|(1 <<PIND3)|*/(1<<PIND7)|(1<<PIND4));    // turn On the Pull-up
 }
+/**************************************************************************
 
+@Name	            ids_extint_init()
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	    This function is used to initialize and enbale the
+                    external interrupts.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 void ids_extint_init()
 {
 	// PD0 is now an input with pull-up enabled
@@ -65,6 +77,15 @@ void ids_extint_init()
 	sei();                    // turn on interrupts
 }
 
+/**************************************************************************
+
+@Name	            ids_panic_btn_status()
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	    This function is used to read the panic button.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 int ids_panic_btn_status()
 {
 	

@@ -1,5 +1,4 @@
-/*
-*************************************************************************************
+/**************************************************************************************
 *
 *									SARGA TECHNOLOGY
 *
@@ -12,12 +11,9 @@
 *
 *
 *
-**************************************************************************************
-*/
+***************************************************************************************/
 
-
-/*!
- **************************************************************************************
+/***************************************************************************************
 
  @File          st_mrs.c 
  
@@ -31,30 +27,56 @@
 
  @Cautions      None
 
- ****************************************************************************************
- */
+ *****************************************************************************************/
 
-/*								Header File Inclusions
-*****************************************************************************************/
+/*********************Header File Inclusions*********************************************/
 
  #include <avr/io.h>
  #include <st_mrs.h>
-
  
- /* Pull down Pin B4 */
+/**************************************************************************
+
+@Name	            int ids_mrs_4()
+@Input_Parameter	None
+@Output_Parameter	Status (integer value)
+@Description	    This function is used to read the values of sensor 
+                    connected at Port C3.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
  int ids_mrs_4()
  {
 	 
 	 return (PINC & (1<<PINC3));
  }
  
- /* Pull down Pin B5 */
+
+ /**************************************************************************
+
+@Name	            int ids_mrs_5()
+@Input_Parameter	None
+@Output_Parameter	Status (integer value)
+@Description	    This function is used to read the values of sensor 
+                    connected at Port C4.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
  int ids_mrs_5()
  {
 	
 	 return (PINC & (1<<PINC4));
  }
  
+/**************************************************************************
+
+@Name	            int ids_mrs_read()
+@Input_Parameter	None
+@Output_Parameter	Status (integer value)
+@Description	    This function is used to read the values of sensor 
+                    connected at Port C3 and C4.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 extern int ids_mrs_read()
 {
 	int  mrs4, mrs5;

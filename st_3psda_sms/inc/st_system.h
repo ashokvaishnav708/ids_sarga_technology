@@ -1,32 +1,46 @@
+/**************************************************************************************
+*
+*									SARGA TECHNOLOGY
+*
+*							 Intruders Detection System IC Code
+*
+*						This code is the property of Sarga Technology.
+*				 (C) Copyright Sarga Technology 2015. All Rights Reserved.
+*
+*	S A R G A  T E C H N O L O G Y   C O N F I D E N T I A L   P R O P R I E T A R Y
+*
+*
+*
+***************************************************************************************/
+
+
+/**************************************************************************************
+
+ @File          st_system.h 
+ 
+ @Description   This header file contains the prototype functions for system led and beep
+
+ @author        Nawaj Khan  <nawajk13@yahoo.in>
+
+ @version       $ Initial 1.0  $
+
+ @date          $Date: 2016/12/10 $
+
+ @Cautions      None
+
+ **************************************************************************************/
+
 #ifndef  ST_System_H_
 #define  ST_System_H_
-#define ON 1
-#define OFF 0
+
+#define ON  1     /* Macro for ON */
+#define OFF 0     /* Macro for OFF */
 
 
-/*
+/************Function Prototype*****************/
 
-@Name	ids_set_sys_led
-@Input_Parameter	state
-@Output_Parameter	None
-@Description	This function is to toggle the System LED.
-				This LED is used for ARM and DISARM notification.
-@Owner	NAWAZ KHAN
-
-*/
 void ids_set_sys_led(int stat);
 
-
-/*
-
-@Name	ids_beep
-@Input_Parameter	state
-@Output_Parameter	None
-@Description	This function simply beeps the buzzer for 500 milliseconds.
-				This beep is used as notification of System ARM and DISARM.
-@Owner	ASHOK VAISHNAV
-
-*/
 void ids_beep(void);
 
 #endif  /* ST_System_H_ */

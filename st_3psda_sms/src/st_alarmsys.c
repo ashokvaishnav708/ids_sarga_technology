@@ -1,5 +1,4 @@
-/*
-*************************************************************************************
+/**************************************************************************************
 *
 *									SARGA TECHNOLOGY
 *
@@ -12,16 +11,13 @@
 *
 *
 *
-**************************************************************************************
-*/
+***************************************************************************************/
 
-/*!
- *************************************************************************************
+/**************************************************************************************
 
  @File          ST_AlarmSys.c 
  
- @Description   This file includes the MC operation code to operate Alarm
-				System
+ @Description   This file includes the MC operation code to operate siren
 
  @author        Nawaj Khan <nawajk13@yahoo.com.in>
 
@@ -31,22 +27,37 @@
 
  @Cautions      None
 
- ***********************************************************************************
- */
+ ************************************************************************************/
 
-/*						Header File Inclusions
-***********************************************************************************/
+/*******************************Header File Inclusions*******************************/
+
 #include <avr/io.h>
 #include <st_alarmsys.h>
 
-/* Alarm System Initialization */
 
+/**************************************************************************
 
+@Name	            ids_siren_enable
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	    This function is used to enable the siren.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 void ids_siren_enable()
 {
 	PORTB |= (1<<PINB1);
 }
 
+/**************************************************************************
+
+@Name	            ids_siren_disable
+@Input_Parameter	None
+@Output_Parameter	None
+@Description	    This function is used to disable the siren.
+@Owner	            ASHOK VAISHNAV
+
+**************************************************************************/
 void ids_siren_disable()
 {
 	PORTB &=~ (1<<PINB1);
