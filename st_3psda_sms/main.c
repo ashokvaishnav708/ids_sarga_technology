@@ -303,7 +303,6 @@ void ids_read_sensors()
 		/* System is ON now */
 		x=0;
 		status=0;
-		active_flag=0;
 		ids_delayms(5);
 		st=0;
 		/* Checking Sensors Indication */
@@ -321,6 +320,7 @@ void ids_read_sensors()
 		/* System is OFF now */
 		x=0;
 		status=0;
+		active_flag=0;
 		ids_delayms(5);
 		st=0;
 	}

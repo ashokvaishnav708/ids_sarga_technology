@@ -413,53 +413,53 @@ Disassembly of section .text:
  312:	90 e0       	ldi	r25, 0x00	; 0
  314:	04 d2       	rcall	.+1032   	; 0x71e <eeprom_read_byte>
  316:	82 30       	cpi	r24, 0x02	; 2
- 318:	91 f5       	brne	.+100    	; 0x37e <ids_read_sensors+0x78>
+ 318:	71 f5       	brne	.+92     	; 0x376 <ids_read_sensors+0x70>
  31a:	10 92 53 02 	sts	0x0253, r1	; 0x800253 <x+0x1>
  31e:	10 92 52 02 	sts	0x0252, r1	; 0x800252 <x>
  322:	10 92 51 02 	sts	0x0251, r1	; 0x800251 <status+0x1>
  326:	10 92 50 02 	sts	0x0250, r1	; 0x800250 <status>
- 32a:	10 92 3b 02 	sts	0x023B, r1	; 0x80023b <__data_end+0x1>
- 32e:	10 92 3a 02 	sts	0x023A, r1	; 0x80023a <__data_end>
- 332:	85 e0       	ldi	r24, 0x05	; 5
- 334:	90 e0       	ldi	r25, 0x00	; 0
- 336:	a8 d0       	rcall	.+336    	; 0x488 <ids_delayms>
- 338:	10 92 5b 02 	sts	0x025B, r1	; 0x80025b <st+0x1>
- 33c:	10 92 5a 02 	sts	0x025A, r1	; 0x80025a <st>
- 340:	c2 d0       	rcall	.+388    	; 0x4c6 <ids_read_pir>
- 342:	89 2b       	or	r24, r25
- 344:	69 f4       	brne	.+26     	; 0x360 <ids_read_sensors+0x5a>
- 346:	2f ef       	ldi	r18, 0xFF	; 255
- 348:	84 e3       	ldi	r24, 0x34	; 52
- 34a:	9c e0       	ldi	r25, 0x0C	; 12
- 34c:	21 50       	subi	r18, 0x01	; 1
- 34e:	80 40       	sbci	r24, 0x00	; 0
- 350:	90 40       	sbci	r25, 0x00	; 0
- 352:	e1 f7       	brne	.-8      	; 0x34c <ids_read_sensors+0x46>
- 354:	00 c0       	rjmp	.+0      	; 0x356 <ids_read_sensors+0x50>
- 356:	00 00       	nop
- 358:	b6 d0       	rcall	.+364    	; 0x4c6 <ids_read_pir>
+ 32a:	85 e0       	ldi	r24, 0x05	; 5
+ 32c:	90 e0       	ldi	r25, 0x00	; 0
+ 32e:	ac d0       	rcall	.+344    	; 0x488 <ids_delayms>
+ 330:	10 92 5b 02 	sts	0x025B, r1	; 0x80025b <st+0x1>
+ 334:	10 92 5a 02 	sts	0x025A, r1	; 0x80025a <st>
+ 338:	c6 d0       	rcall	.+396    	; 0x4c6 <ids_read_pir>
+ 33a:	89 2b       	or	r24, r25
+ 33c:	69 f4       	brne	.+26     	; 0x358 <ids_read_sensors+0x52>
+ 33e:	2f ef       	ldi	r18, 0xFF	; 255
+ 340:	84 e3       	ldi	r24, 0x34	; 52
+ 342:	9c e0       	ldi	r25, 0x0C	; 12
+ 344:	21 50       	subi	r18, 0x01	; 1
+ 346:	80 40       	sbci	r24, 0x00	; 0
+ 348:	90 40       	sbci	r25, 0x00	; 0
+ 34a:	e1 f7       	brne	.-8      	; 0x344 <ids_read_sensors+0x3e>
+ 34c:	00 c0       	rjmp	.+0      	; 0x34e <ids_read_sensors+0x48>
+ 34e:	00 00       	nop
+ 350:	ba d0       	rcall	.+372    	; 0x4c6 <ids_read_pir>
+ 352:	89 2b       	or	r24, r25
+ 354:	29 f0       	breq	.+10     	; 0x360 <ids_read_sensors+0x5a>
+ 356:	0b c0       	rjmp	.+22     	; 0x36e <ids_read_sensors+0x68>
+ 358:	a9 d0       	rcall	.+338    	; 0x4ac <ids_mrs_read>
  35a:	89 2b       	or	r24, r25
- 35c:	29 f0       	breq	.+10     	; 0x368 <ids_read_sensors+0x62>
- 35e:	0b c0       	rjmp	.+22     	; 0x376 <ids_read_sensors+0x70>
- 360:	a5 d0       	rcall	.+330    	; 0x4ac <ids_mrs_read>
- 362:	89 2b       	or	r24, r25
- 364:	81 f3       	breq	.-32     	; 0x346 <ids_read_sensors+0x40>
- 366:	08 95       	ret
- 368:	80 91 3a 02 	lds	r24, 0x023A	; 0x80023a <__data_end>
- 36c:	90 91 3b 02 	lds	r25, 0x023B	; 0x80023b <__data_end+0x1>
+ 35c:	81 f3       	breq	.-32     	; 0x33e <ids_read_sensors+0x38>
+ 35e:	08 95       	ret
+ 360:	80 91 3a 02 	lds	r24, 0x023A	; 0x80023a <__data_end>
+ 364:	90 91 3b 02 	lds	r25, 0x023B	; 0x80023b <__data_end+0x1>
+ 368:	89 2b       	or	r24, r25
+ 36a:	d1 f4       	brne	.+52     	; 0x3a0 <ids_read_sensors+0x9a>
+ 36c:	6c cf       	rjmp	.-296    	; 0x246 <ids_alert_system>
+ 36e:	9e d0       	rcall	.+316    	; 0x4ac <ids_mrs_read>
  370:	89 2b       	or	r24, r25
- 372:	b1 f4       	brne	.+44     	; 0x3a0 <ids_read_sensors+0x9a>
- 374:	68 cf       	rjmp	.-304    	; 0x246 <ids_alert_system>
- 376:	9a d0       	rcall	.+308    	; 0x4ac <ids_mrs_read>
- 378:	89 2b       	or	r24, r25
- 37a:	b1 f3       	breq	.-20     	; 0x368 <ids_read_sensors+0x62>
- 37c:	08 95       	ret
- 37e:	83 30       	cpi	r24, 0x03	; 3
- 380:	79 f4       	brne	.+30     	; 0x3a0 <ids_read_sensors+0x9a>
- 382:	10 92 53 02 	sts	0x0253, r1	; 0x800253 <x+0x1>
- 386:	10 92 52 02 	sts	0x0252, r1	; 0x800252 <x>
- 38a:	10 92 51 02 	sts	0x0251, r1	; 0x800251 <status+0x1>
- 38e:	10 92 50 02 	sts	0x0250, r1	; 0x800250 <status>
+ 372:	b1 f3       	breq	.-20     	; 0x360 <ids_read_sensors+0x5a>
+ 374:	08 95       	ret
+ 376:	83 30       	cpi	r24, 0x03	; 3
+ 378:	99 f4       	brne	.+38     	; 0x3a0 <ids_read_sensors+0x9a>
+ 37a:	10 92 53 02 	sts	0x0253, r1	; 0x800253 <x+0x1>
+ 37e:	10 92 52 02 	sts	0x0252, r1	; 0x800252 <x>
+ 382:	10 92 51 02 	sts	0x0251, r1	; 0x800251 <status+0x1>
+ 386:	10 92 50 02 	sts	0x0250, r1	; 0x800250 <status>
+ 38a:	10 92 3b 02 	sts	0x023B, r1	; 0x80023b <__data_end+0x1>
+ 38e:	10 92 3a 02 	sts	0x023A, r1	; 0x80023a <__data_end>
  392:	85 e0       	ldi	r24, 0x05	; 5
  394:	90 e0       	ldi	r25, 0x00	; 0
  396:	78 d0       	rcall	.+240    	; 0x488 <ids_delayms>
